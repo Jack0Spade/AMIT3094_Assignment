@@ -9,7 +9,9 @@ package assignment;
  * @author LocalMachine
  */
 public class Example {
+    
     public String printMsg(String input){
         return input;
     }
+    
 }
