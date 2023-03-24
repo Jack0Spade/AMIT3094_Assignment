@@ -13,11 +13,17 @@ import javax.swing.*;
  *
  * @author LocalMachine
  */
+//CREATE TABLE "CUSTOMER"
+//(    
+//   "customer_id" INT not null primary key
+//        GENERATED ALWAYS AS IDENTITY
+//        (START WITH 1, INCREMENT BY 1),   
+//   "customer_name" VARCHAR(50));
 public class DB {
 
     private String host = "jdbc:derby://localhost:1527/AMIT3094_Assignment";
-    private String user = "APP";
-    private String password = "admin";
+    private String user = "nbuser";
+    private String password = "nbuser";
     private Connection conn;
     private PreparedStatement stmt;
 
@@ -53,7 +59,7 @@ public class DB {
             stmt = conn.prepareStatement(queryStr);
             rs = stmt.executeQuery();
             rs.next();
-            data = rs.getString(1);
+            data = rs.getString(2);
         } catch (SQLException ex) {
             System.out.println(ex);
         }
