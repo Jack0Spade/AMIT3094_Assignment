@@ -1,4 +1,120 @@
-Sun Mar 19 17:54:51 MYT 2023 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+Fri Mar 24 15:47:34 MYT 2023 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Sun Mar 19 18:27:09 MYT 2023: Shutting down Derby engine
+Fri Mar 24 15:48:29 MYT 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0187-1296-54f8-00005df24be7 
+on database directory C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB\AMIT3094_Assignment with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Loaded from file:/C:/Program%20Files/glassfish5/javadb/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=16.0.1+9-24
+user.dir=C:\Program Files\glassfish5\javadb
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB
+Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
+Fri Mar 24 15:49:37 MYT 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 08264012-0187-1296-54f8-00005df24be7 
+on database directory C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB\AMIT3094 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Loaded from file:/C:/Program%20Files/glassfish5/javadb/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=16.0.1+9-24
+user.dir=C:\Program Files\glassfish5\javadb
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Fri Mar 24 15:49:45 MYT 2023:
+Shutting down instance a816c00e-0187-1296-54f8-00005df24be7 on database directory C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB\AMIT3094_Assignment with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Fri Mar 24 15:49:45 MYT 2023 Thread[DRDAConnThread_2,5,main] (DATABASE = AMIT3094_Assignment), (DRDAID = {3}), Database 'AMIT3094_Assignment' shutdown.
+----------------------------------------------------------------
+Fri Mar 24 15:49:48 MYT 2023:
+Shutting down instance 08264012-0187-1296-54f8-00005df24be7 on database directory C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB\AMIT3094 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Fri Mar 24 15:49:48 MYT 2023 Thread[DRDAConnThread_2,5,main] (DATABASE = AMIT3094), (DRDAID = {4}), Database 'AMIT3094' shutdown.
+----------------------------------------------------------------
+Fri Mar 24 15:50:05 MYT 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance ce8780ad-0187-1296-54f8-00005df24be7 
+on database directory C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB\AMIT3094_Assignment with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Loaded from file:/C:/Program%20Files/glassfish5/javadb/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=16.0.1+9-24
+user.dir=C:\Program Files\glassfish5\javadb
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Fri Mar 24 15:50:06 MYT 2023:
+Shutting down instance ce8780ad-0187-1296-54f8-00005df24be7 on database directory C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB\AMIT3094_Assignment with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Fri Mar 24 15:50:06 MYT 2023 Thread[DRDAConnThread_2,5,main] (DATABASE = AMIT3094_Assignment), (DRDAID = {6}), Database 'AMIT3094_Assignment' shutdown.
+----------------------------------------------------------------
+Fri Mar 24 15:50:09 MYT 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance de4ec14e-0187-1296-54f8-00005df24be7 
+on database directory C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB\AMIT3094_Assignment with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Loaded from file:/C:/Program%20Files/glassfish5/javadb/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=16.0.1+9-24
+user.dir=C:\Program Files\glassfish5\javadb
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB
+Database Class Loader started - derby.database.classpath=''
+Fri Mar 24 15:50:19 MYT 2023 Thread[DRDAConnThread_3,5,main] (XID = 219), (SESSIONID = 2), (DATABASE = AMIT3094_Assignment), (DRDAID = {8}), Cleanup action starting
+java.sql.SQLNonTransientConnectionException: Connection authentication failure occurred.  Reason: Invalid authentication..
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.checkUserCredentials(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:554)
+	at org.apache.derby.jdbc.InternalDriver.getNewEmbedConnection(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.EmbeddedDriver.connect(Unknown Source)
+	at org.apache.derby.impl.drda.Database.makeConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.getConnFromDatabaseName(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.verifyUserIdPassword(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseSECCHK(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseDRDAConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.processCommands(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.run(Unknown Source)
+Caused by: ERROR 08004: Connection authentication failure occurred.  Reason: Invalid authentication..
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 21 more
+============= begin nested exception, level (1) ===========
+ERROR 08004: Connection authentication failure occurred.  Reason: Invalid authentication..
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.checkUserCredentials(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:554)
+	at org.apache.derby.jdbc.InternalDriver.getNewEmbedConnection(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.EmbeddedDriver.connect(Unknown Source)
+	at org.apache.derby.impl.drda.Database.makeConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.getConnFromDatabaseName(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.verifyUserIdPassword(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseSECCHK(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.parseDRDAConnection(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.processCommands(Unknown Source)
+	at org.apache.derby.impl.drda.DRDAConnThread.run(Unknown Source)
+============= end nested exception, level (1) ===========
+Cleanup action completed
+Fri Mar 24 15:50:19 MYT 2023 Thread[DRDAConnThread_3,5,main] (DATABASE = AMIT3094_Assignment), (DRDAID = {8}), Connection authentication failure occurred.  Reason: Invalid authentication..
