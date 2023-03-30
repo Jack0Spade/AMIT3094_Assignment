@@ -7,6 +7,7 @@ package assignment;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 /**
@@ -50,27 +51,29 @@ public class DB {
         }
     }
 
-    public String selectAllRecord(String table) {
+    public ArrayList<ArrayList> selectAllRecord(String table) {
         String queryStr = "SELECT * FROM " + table;
+        ArrayList<ArrayList> arr = new ArrayList<>();
         ResultSet rs = null;
         String data = "";
         try {
             // Next to jump to first row because dumbass java starts at row 0
             stmt = conn.prepareStatement(queryStr);
             rs = stmt.executeQuery();
-            rs.next();
-            data = rs.getString(2);
+
+            while (rs.next()) {
+                ArrayList innerArr = new ArrayList();
+                int colCount = rs.getMetaData().getColumnCount();
+                for (int i = 1; i <= colCount; i++) {
+                    innerArr.add(rs.getString(i));
+                }
+                arr.add(innerArr);
+            }
         } catch (SQLException ex) {
             System.out.println(ex);
         }
         shutDown();
-        return data;
+        return arr;
     }
-//    
-//    public static void main(String [] args){
-//        DB db = new DB();
-//        db.createConnection();
-//        System.out.println(db.selectAllRecord("customer"));
-//    }
 
 }
