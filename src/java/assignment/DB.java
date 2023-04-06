@@ -25,14 +25,14 @@ public class DB {
     private String host = "jdbc:derby://localhost:1527/AMIT3094_Assignment";
     private String user = "nbuser";
     private String password = "nbuser";
-    private Connection conn;
-    private PreparedStatement stmt;
+    protected Connection conn;
+    protected PreparedStatement stmt;
 
     public DB() {
         createConnection();
     }
 
-    private void createConnection() {
+    protected void createConnection() {
         try {
             conn = DriverManager.getConnection(host, user, password);
 
@@ -41,7 +41,7 @@ public class DB {
         }
     }
 
-    private void shutDown() {
+    protected void shutDown() {
         if (conn != null) {
             try {
                 conn.close();
