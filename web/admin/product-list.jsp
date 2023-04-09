@@ -5,8 +5,10 @@
 <html lang="zxx" class="js">
 
     <%@ include file = "header.jsp" %>
-    <%@page import="assignment.DB" %>
-        <%@page import="assignment.admin.Product" %>
+    <%@page import="entity.Product, java.util.*" %>
+    <%
+        List<Product> prodList = (List<Product>) session.getAttribute("products");
+    %>
 
     <body class="nk-body bg-lighter npc-default has-sidebar ">
         <div class="nk-app-root">
@@ -55,9 +57,7 @@
                                         </thead>
                                         <tbody>
                                             <%
-                                                Product product = new Product();
-                                                ArrayList<ArrayList> prodArr = product.selectAllRecord("PRODUCT");
-                                                for(ArrayList prod : prodArr){
+                                                for (Product prod : prodList) {
                                             %>
                                             <tr class="nk-tb-item">
                                                 <td class="nk-tb-col nk-tb-col-check">
@@ -68,15 +68,15 @@
                                                 </td>
                                                 <td class="nk-tb-col tb-col-sm">
                                                     <span class="tb-product">
-                                                        <img src="data:image/png;base64,<% out.print(prod.get(4)); %>" alt="" class="thumb">
-                                                        <span class="title"><% out.print(prod.get(1)); %></span>
+                                                        <img src="" alt="" class="thumb">
+                                                        <span class="title"><%= prod.getProductName() %></span>
                                                     </span>
                                                 </td>
                                                 <td class="nk-tb-col">
-                                                    <span class="tb-lead">RM <%= prod.get(2) %></span>
+                                                    <span class="tb-lead"><%= prod.getProductPrice() %></span>
                                                 </td>
                                                 <td class="nk-tb-col">
-                                                    <span class="tb-sub"><%= prod.get(3) %></span>
+                                                    <span class="tb-sub"></span>
                                                 </td>
                                                 <td class="nk-tb-col tb-col-md">
                                                     <span class="tb-sub">Fitbit, Tracker</span>

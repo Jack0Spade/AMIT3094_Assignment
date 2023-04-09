@@ -33,7 +33,7 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="product-list.jsp" class="nk-menu-link"><span class="nk-menu-text">Product Lists</span></a>
+                                <a href="product-list" class="nk-menu-link"><span class="nk-menu-text">Product Lists</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="html/project-list.html" class="nk-menu-link"><span class="nk-menu-text">Project List</span></a>
