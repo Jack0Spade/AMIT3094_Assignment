@@ -4,9 +4,17 @@
         <servlet-name>ProductController</servlet-name>
         <servlet-class>assignment.admin.ProductController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginOperation</servlet-name>
+        <servlet-class>LoginOperation</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductController</servlet-name>
         <url-pattern>/admin/product-list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginOperation</servlet-name>
+        <url-pattern>/LoginOperation</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

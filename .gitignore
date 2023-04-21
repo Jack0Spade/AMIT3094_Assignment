@@ -3,3 +3,5 @@ DB/AMIT3094_Assignment/db.lck
 *.log
 DB/derby.log
 /dist/
+/DB/AMIT3094_Assignment/log/
+nbproject/
