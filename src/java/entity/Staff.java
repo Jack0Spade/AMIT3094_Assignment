@@ -33,10 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Staff.findByEmail", query = "SELECT s FROM Staff s WHERE s.email = :email"),
     @NamedQuery(name = "Staff.findByPassword", query = "SELECT s FROM Staff s WHERE s.password = :password"),
     @NamedQuery(name = "Staff.findByStatus", query = "SELECT s FROM Staff s WHERE s.status = :status"),
-    @NamedQuery(name = "Staff.findByStaffContact", query = "SELECT s FROM Staff s WHERE s.staffContact = :staffContact"),
-    @NamedQuery(name = "Staff.findByEmailAndPassword", query = "SELECT s FROM Staff s WHERE s.email = :email AND s.password = :password")
-})
-
+    @NamedQuery(name = "Staff.findByStaffContact", query = "SELECT s FROM Staff s WHERE s.staffContact = :staffContact")})
 public class Staff implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -160,5 +157,5 @@ public class Staff implements Serializable {
     public String toString() {
         return "entity.Staff[ staffId=" + staffId + " ]";
     }
-
+    
 }

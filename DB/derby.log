@@ -1,20 +1,14 @@
-Fri Apr 21 21:55:29 SGT 2023 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+Fri Apr 28 15:16:49 MYT 2023 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Fri Apr 21 21:55:29 SGT 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0187-a419-38de-ffff8ffeaef7 
-on database directory C:\Users\kahya\Documents\GitHub\AMIT3094_Assignment\DB\AMIT3094_Assignment with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-Loaded from file:/C:/Users/kahya/glassfish5_1/javadb/lib/derby.jar
+Fri Apr 28 15:16:50 MYT 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0187-c6b8-c157-00005df24be7 
+on database directory C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB\AMIT3094_Assignment with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Loaded from file:/C:/Program%20Files/glassfish5/javadb/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_144-b01
-user.dir=C:\Users\kahya\glassfish5_1\javadb
+java.runtime.version=16.0.1+9-24
+user.dir=C:\Program Files\glassfish5\javadb
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
-derby.system.home=C:\Users\kahya\Documents\GitHub\AMIT3094_Assignment\DB
+derby.system.home=C:\Users\LocalMachine\Desktop\Jack\JSP\AMIT3094_Assignment\AMIT3094_Assignment\DB
 Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Fri Apr 21 22:07:22 SGT 2023: Shutting down Derby engine
-----------------------------------------------------------------
-Fri Apr 21 22:07:22 SGT 2023:
-Shutting down instance a816c00e-0187-a419-38de-ffff8ffeaef7 on database directory C:\Users\kahya\Documents\GitHub\AMIT3094_Assignment\DB\AMIT3094_Assignment with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
-----------------------------------------------------------------

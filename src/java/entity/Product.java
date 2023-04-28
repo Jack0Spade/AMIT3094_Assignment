@@ -12,7 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -33,9 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
     @NamedQuery(name = "Product.findByProductId", query = "SELECT p FROM Product p WHERE p.productId = :productId"),
     @NamedQuery(name = "Product.findByProductName", query = "SELECT p FROM Product p WHERE p.productName = :productName"),
-    @NamedQuery(name = "Product.findByProductPrice", query = "SELECT p FROM Product p WHERE p.productPrice = :productPrice"),
-    @NamedQuery(name = "Product.findByQuantity", query = "SELECT p FROM Product p WHERE p.quantity = :quantity"),
-    @NamedQuery(name = "Product.findByProductDescription", query = "SELECT p FROM Product p WHERE p.productDescription = :productDescription"),
+    @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
+    @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description"),
     @NamedQuery(name = "Product.findByStatus", query = "SELECT p FROM Product p WHERE p.status = :status")})
 public class Product implements Serializable {
 
@@ -45,30 +46,27 @@ public class Product implements Serializable {
     @Basic(optional = false)
     @Column(name = "PRODUCT_ID")
     private Integer productId;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 140)
+    @Size(max = 80)
     @Column(name = "PRODUCT_NAME")
     private String productName;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "PRODUCT_PRICE")
-    private Double productPrice;
-    @Lob
-    @Column(name = "PRODUCT_IMAGE")
-    private Serializable productImage;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "QUANTITY")
-    private int quantity;
-    @Size(max = 200)
-    @Column(name = "PRODUCT_DESCRIPTION")
-    private String productDescription;
+    @Column(name = "PRICE")
+    private Double price;
+    @Size(max = 150)
+    @Column(name = "DESCRIPTION")
+    private String description;
     @Basic(optional = false)
     @NotNull
     @Column(name = "STATUS")
     private int status;
+    @Lob
+    @Column(name = "PRODUCT_IMAGE")
+    private Serializable productImage;
     @OneToMany(mappedBy = "productId")
     private List<OrderList> orderListList;
+    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "CATEGORY_ID")
+    @ManyToOne
+    private Category categoryId;
 
     public Product() {
     }
@@ -77,10 +75,8 @@ public class Product implements Serializable {
         this.productId = productId;
     }
 
-    public Product(Integer productId, String productName, int quantity, int status) {
+    public Product(Integer productId, int status) {
         this.productId = productId;
-        this.productName = productName;
-        this.quantity = quantity;
         this.status = status;
     }
 
@@ -100,36 +96,20 @@ public class Product implements Serializable {
         this.productName = productName;
     }
 
-    public Double getProductPrice() {
-        return productPrice;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setProductPrice(Double productPrice) {
-        this.productPrice = productPrice;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
-    public Serializable getProductImage() {
-        return productImage;
+    public String getDescription() {
+        return description;
     }
 
-    public void setProductImage(Serializable productImage) {
-        this.productImage = productImage;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getProductDescription() {
-        return productDescription;
-    }
-
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getStatus() {
@@ -140,6 +120,14 @@ public class Product implements Serializable {
         this.status = status;
     }
 
+    public Serializable getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(Serializable productImage) {
+        this.productImage = productImage;
+    }
+
     @XmlTransient
     public List<OrderList> getOrderListList() {
         return orderListList;
@@ -147,6 +135,14 @@ public class Product implements Serializable {
 
     public void setOrderListList(List<OrderList> orderListList) {
         this.orderListList = orderListList;
+    }
+
+    public Category getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Category categoryId) {
+        this.categoryId = categoryId;
     }
 
     @Override

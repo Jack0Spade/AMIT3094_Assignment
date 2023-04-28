@@ -5,19 +5,23 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,8 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p"),
     @NamedQuery(name = "Payment.findByPaymentId", query = "SELECT p FROM Payment p WHERE p.paymentId = :paymentId"),
-    @NamedQuery(name = "Payment.findByTotal", query = "SELECT p FROM Payment p WHERE p.total = :total"),
-    @NamedQuery(name = "Payment.findByType", query = "SELECT p FROM Payment p WHERE p.type = :type")})
+    @NamedQuery(name = "Payment.findByPaymentMethod", query = "SELECT p FROM Payment p WHERE p.paymentMethod = :paymentMethod"),
+    @NamedQuery(name = "Payment.findByAmount", query = "SELECT p FROM Payment p WHERE p.amount = :amount"),
+    @NamedQuery(name = "Payment.findByDate", query = "SELECT p FROM Payment p WHERE p.date = :date")})
 public class Payment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,15 +44,17 @@ public class Payment implements Serializable {
     @Basic(optional = false)
     @Column(name = "PAYMENT_ID")
     private Integer paymentId;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "TOTAL")
-    private Double total;
     @Size(max = 50)
-    @Column(name = "TYPE")
-    private String type;
-    @JoinColumn(name = "ORDER_ID", referencedColumnName = "ORDER_ID")
-    @ManyToOne
-    private Order1 orderId;
+    @Column(name = "PAYMENT_METHOD")
+    private String paymentMethod;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "AMOUNT")
+    private Double amount;
+    @Column(name = "DATE")
+    @Temporal(TemporalType.DATE)
+    private Date date;
+    @OneToMany(mappedBy = "paymentId")
+    private List<Orders> ordersList;
 
     public Payment() {
     }
@@ -64,28 +71,37 @@ public class Payment implements Serializable {
         this.paymentId = paymentId;
     }
 
-    public Double getTotal() {
-        return total;
+    public String getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setTotal(Double total) {
-        this.total = total;
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
-    public String getType() {
-        return type;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
-    public Order1 getOrderId() {
-        return orderId;
+    public Date getDate() {
+        return date;
     }
 
-    public void setOrderId(Order1 orderId) {
-        this.orderId = orderId;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @XmlTransient
+    public List<Orders> getOrdersList() {
+        return ordersList;
+    }
+
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
     }
 
     @Override
