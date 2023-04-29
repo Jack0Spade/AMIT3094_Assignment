@@ -29,43 +29,43 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
-    @NamedQuery(name = "Category.findByCategoryId", query = "SELECT c FROM Category c WHERE c.categoryId = :categoryId"),
-    @NamedQuery(name = "Category.findByCategoryName", query = "SELECT c FROM Category c WHERE c.categoryName = :categoryName")})
+    @NamedQuery(name = "Category.findByCategoryid", query = "SELECT c FROM Category c WHERE c.categoryid = :categoryid"),
+    @NamedQuery(name = "Category.findByCategoryname", query = "SELECT c FROM Category c WHERE c.categoryname = :categoryname")})
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "CATEGORY_ID")
-    private Integer categoryId;
+    @Column(name = "CATEGORYID")
+    private Integer categoryid;
     @Size(max = 50)
-    @Column(name = "CATEGORY_NAME")
-    private String categoryName;
-    @OneToMany(mappedBy = "categoryId")
+    @Column(name = "CATEGORYNAME")
+    private String categoryname;
+    @OneToMany(mappedBy = "categorycode")
     private List<Product> productList;
 
     public Category() {
     }
 
-    public Category(Integer categoryId) {
-        this.categoryId = categoryId;
+    public Category(Integer categoryid) {
+        this.categoryid = categoryid;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Integer getCategoryid() {
+        return categoryid;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryid(Integer categoryid) {
+        this.categoryid = categoryid;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getCategoryname() {
+        return categoryname;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategoryname(String categoryname) {
+        this.categoryname = categoryname;
     }
 
     @XmlTransient
@@ -80,7 +80,7 @@ public class Category implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (categoryId != null ? categoryId.hashCode() : 0);
+        hash += (categoryid != null ? categoryid.hashCode() : 0);
         return hash;
     }
 
@@ -91,7 +91,7 @@ public class Category implements Serializable {
             return false;
         }
         Category other = (Category) object;
-        if ((this.categoryId == null && other.categoryId != null) || (this.categoryId != null && !this.categoryId.equals(other.categoryId))) {
+        if ((this.categoryid == null && other.categoryid != null) || (this.categoryid != null && !this.categoryid.equals(other.categoryid))) {
             return false;
         }
         return true;
@@ -99,7 +99,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Category[ categoryId=" + categoryId + " ]";
+        return "entity.Category[ categoryid=" + categoryid + " ]";
     }
     
 }

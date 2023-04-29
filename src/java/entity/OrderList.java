@@ -39,7 +39,7 @@ public class OrderList implements Serializable {
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ORDER_ID")
     @ManyToOne
     private Orders orderId;
-    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")
+    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCTID")
     @ManyToOne
     private Product productId;
 
