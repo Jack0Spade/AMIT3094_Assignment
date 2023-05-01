@@ -5,6 +5,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.sql.Blob;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -62,7 +63,7 @@ public class Product implements Serializable {
     private int status;
     @Lob
     @Column(name = "PRODUCTIMAGE")
-    private Serializable productimage;
+    private byte[] productimage;
     @Column(name = "QTY")
     private Integer qty;
     @OneToMany(mappedBy = "productId")
@@ -123,11 +124,11 @@ public class Product implements Serializable {
         this.status = status;
     }
 
-    public Serializable getProductimage() {
+    public byte[] getProductimage() {
         return productimage;
     }
 
-    public void setProductimage(Serializable productimage) {
+    public void setProductimage(byte[] productimage) {
         this.productimage = productimage;
     }
 

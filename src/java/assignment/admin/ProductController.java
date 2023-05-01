@@ -28,17 +28,17 @@ public class ProductController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         try {
             Query query = manager.createNamedQuery("Product.findAll");
             //retrieve result and store into SubjectList
             List<Product> productList = query.getResultList();
-
-            HttpSession session = request.getSession();
             session.setAttribute("products", productList);
 
             response.sendRedirect("/AMIT3094_Assignment/admin/product-list.jsp");
         } catch (Exception e) {
-
+            session.setAttribute("error", e);
+            response.sendRedirect("/AMIT3094_Assignment/admin/error.jsp");
         }
     }
 

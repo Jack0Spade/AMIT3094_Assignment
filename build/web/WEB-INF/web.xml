@@ -6,7 +6,43 @@
     </servlet>
     <servlet>
         <servlet-name>LoginOperation</servlet-name>
-        <servlet-class>LoginOperation</servlet-class>
+        <servlet-class>assignment.admin.LoginOperation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutOperation</servlet-name>
+        <servlet-class>assignment.admin.LogoutOperation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditProduct</servlet-name>
+        <servlet-class>assignment.admin.EditProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProduct</servlet-name>
+        <servlet-class>assignment.admin.UpdateProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetCategoryList</servlet-name>
+        <servlet-class>assignment.admin.GetCategoryList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddNewProduct</servlet-name>
+        <servlet-class>assignment.admin.AddNewProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetCustomerList</servlet-name>
+        <servlet-class>assignment.admin.GetCustomerList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SessionCheck</servlet-name>
+        <servlet-class>assignment.admin.SessionCheck</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetCustomerDetails</servlet-name>
+        <servlet-class>assignment.admin.GetCustomerDetails</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCustomer</servlet-name>
+        <servlet-class>assignment.admin.UpdateCustomer</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductController</servlet-name>
@@ -14,7 +50,43 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginOperation</servlet-name>
-        <url-pattern>/LoginOperation</url-pattern>
+        <url-pattern>/admin/LoginOperation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutOperation</servlet-name>
+        <url-pattern>/admin/LogoutOperation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditProduct</servlet-name>
+        <url-pattern>/admin/EditProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProduct</servlet-name>
+        <url-pattern>/admin/UpdateProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetCategoryList</servlet-name>
+        <url-pattern>/admin/GetCategoryList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewProduct</servlet-name>
+        <url-pattern>/admin/AddNewProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetCustomerList</servlet-name>
+        <url-pattern>/admin/GetCustomerList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SessionCheck</servlet-name>
+        <url-pattern>/admin/SessionCheck</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetCustomerDetails</servlet-name>
+        <url-pattern>/admin/GetCustomerDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCustomer</servlet-name>
+        <url-pattern>/admin/UpdateCustomer</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
