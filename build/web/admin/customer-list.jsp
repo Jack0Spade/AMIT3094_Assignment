@@ -102,13 +102,7 @@
                             </div>
                         </div>
                     </div>
-                    <%
-                        int error = (Integer) session.getAttribute("error");
-                        if (error == 1) {
-                            
-                        }
-                    %>
-                    <div class="modal fade" role="dialog" id="profile-edit">
+                    <div class="modal fade addform" role="dialog" id="profile-edit">
                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content">
                                 <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
@@ -223,7 +217,21 @@
         <script src="./assets/js/bundle.js?ver=3.1.0"></script>
         <script src="./assets/js/scripts.js?ver=3.1.0"></script>
         <script src="./assets/js/charts/chart-ecommerce.js?ver=3.1.0"></script>
+        <%
+            try {
+                int error = (Integer) session.getAttribute("error");
+                if (error == 1) {
+                    out.print("<script>Swal.fire({"
+                            + "icon: 'error',"
+                            + "title: 'Oops...',"
+                            + "text: `Adding new customer failed!`"
+                            + "})" + "</script>");
+                    session.setAttribute("error", 0);
+                }
+            } catch (Exception e) {
 
+            }
+        %>
     </body>
 
 </html>

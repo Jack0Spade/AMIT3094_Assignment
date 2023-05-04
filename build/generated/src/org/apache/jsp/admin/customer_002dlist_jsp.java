@@ -136,8 +136,16 @@ public final class customer_002dlist_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("                            <li class=\"nk-menu-item\">\n");
       out.write("                                <a href=\"customer-list.jsp\" class=\"nk-menu-link\"><span class=\"nk-menu-text\">Customer Lists</span></a>\n");
       out.write("                            </li>\n");
+      out.write("                        </ul><!-- .nk-menu-sub -->\n");
+      out.write("                    </li><!-- .nk-menu-item -->\n");
+      out.write("                    <li class=\"nk-menu-item has-sub\">\n");
+      out.write("                        <a href=\"#\" class=\"nk-menu-link nk-menu-toggle\">\n");
+      out.write("                            <span class=\"nk-menu-icon\"><em class=\"icon ni ni-tile-thumb-fill\"></em></span>\n");
+      out.write("                            <span class=\"nk-menu-text\">Orders</span>\n");
+      out.write("                        </a>\n");
+      out.write("                        <ul class=\"nk-menu-sub\">\n");
       out.write("                            <li class=\"nk-menu-item\">\n");
-      out.write("                                <a href=\"add-product.jsp\" class=\"nk-menu-link\"><span class=\"nk-menu-text\">Add Customer</span></a>\n");
+      out.write("                                <a href=\"order-list.jsp\" class=\"nk-menu-link\"><span class=\"nk-menu-text\">Orders Lists</span></a>\n");
       out.write("                            </li>\n");
       out.write("                        </ul><!-- .nk-menu-sub -->\n");
       out.write("                    </li><!-- .nk-menu-item -->\n");
@@ -329,7 +337,7 @@ public final class customer_002dlist_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("                            </div>\n");
       out.write("                        </div>\n");
       out.write("                    </div>\n");
-      out.write("                    <div class=\"modal fade\" role=\"dialog\" id=\"profile-edit\">\n");
+      out.write("                    <div class=\"modal fade addform\" role=\"dialog\" id=\"profile-edit\">\n");
       out.write("                        <div class=\"modal-dialog modal-dialog-centered modal-lg\" role=\"document\">\n");
       out.write("                            <div class=\"modal-content\">\n");
       out.write("                                <a href=\"#\" class=\"close\" data-bs-dismiss=\"modal\"><em class=\"icon ni ni-cross-sm\"></em></a>\n");
@@ -345,76 +353,86 @@ public final class customer_002dlist_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("                                                        <div class=\"form-group\">\n");
       out.write("                                                            <label class=\"form-label\" for=\"full-name\">Full Name</label>\n");
       out.write("                                                            <input type=\"text\" class=\"form-control form-control-lg pt-0 pb-0\" name=\"customer-name\" value=\"\" placeholder=\"\">\n");
-      out.write("                                                            ");
+      out.write("                                                            <span class=\"text-danger\">\n");
+      out.write("                                                                ");
 
-                                                                if (session.getAttribute("nameError") != null && session.getAttribute("nameError") != "") {
-                                                                    out.print(session.getAttribute("nameError"));
-                                                                    session.setAttribute("nameError", null);
-                                                                }
-                                                            
+                                                                    if (session.getAttribute("nameError") != null && session.getAttribute("nameError") != "") {
+                                                                        out.print(session.getAttribute("nameError"));
+                                                                        session.setAttribute("nameError", null);
+                                                                    }
+                                                                
       out.write("\n");
+      out.write("                                                            </span>\n");
       out.write("                                                        </div>\n");
       out.write("                                                    </div>\n");
       out.write("                                                    <div class=\"col-md-6\">\n");
       out.write("                                                        <div class=\"form-group\">\n");
       out.write("                                                            <label class=\"form-label\" for=\"display-name\">Email</label>\n");
       out.write("                                                            <input type=\"email\" class=\"form-control form-control-lg pt-0 pb-0\" name=\"customer-email\" value=\"\" placeholder=\"\">\n");
-      out.write("                                                            ");
+      out.write("                                                            <span class=\"text-danger\">\n");
+      out.write("                                                                ");
 
-                                                                if (session.getAttribute("emailError") != null && session.getAttribute("emailError") != "") {
-                                                                    out.print(session.getAttribute("emailError"));
-                                                                    session.setAttribute("emailError", null);
-                                                                }
-                                                            
+                                                                    if (session.getAttribute("emailError") != null && session.getAttribute("emailError") != "") {
+                                                                        out.print(session.getAttribute("emailError"));
+                                                                        session.setAttribute("emailError", null);
+                                                                    }
+                                                                
       out.write("\n");
+      out.write("                                                            </span>\n");
       out.write("                                                        </div>\n");
       out.write("                                                    </div>\n");
       out.write("                                                    <div class=\"col-md-6\">\n");
       out.write("                                                        <div class=\"form-group\">\n");
       out.write("                                                            <label class=\"form-label\" for=\"phone-no\">Password</label>\n");
       out.write("                                                            <input type=\"password\" class=\"form-control form-control-lg pt-0 pb-0 ps-2 pe-2\" name=\"customer-password\" value=\"\" placeholder=\"\">\n");
-      out.write("                                                            ");
+      out.write("                                                            <span class=\"text-danger\">\n");
+      out.write("                                                                ");
 
-                                                                if (session.getAttribute("passwordError") != null && session.getAttribute("passwordError") != "") {
-                                                                    out.print(session.getAttribute("passwordError"));
-                                                                    session.setAttribute("passwordError", null);
-                                                                }
-                                                            
+                                                                    if (session.getAttribute("passwordError") != null && session.getAttribute("passwordError") != "") {
+                                                                        out.print(session.getAttribute("passwordError"));
+                                                                        session.setAttribute("passwordError", null);
+                                                                    }
+                                                                
       out.write("\n");
+      out.write("                                                            </span>\n");
       out.write("                                                        </div>\n");
       out.write("                                                    </div>\n");
       out.write("                                                    <div class=\"col-md-6\">\n");
       out.write("                                                        <div class=\"form-group\">\n");
       out.write("                                                            <label class=\"form-label\" for=\"phone-no\">Confirm Password</label>\n");
       out.write("                                                            <input type=\"password\" class=\"form-control form-control-lg pt-0 pb-0 ps-2 pe-2\" name=\"customer-confirm-password\" value=\"\" placeholder=\"\">\n");
-      out.write("                                                            ");
+      out.write("                                                            <span class=\"text-danger\">\n");
+      out.write("                                                                ");
 
-                                                                if (session.getAttribute("confirmPasswordError") != null && session.getAttribute("confirmPasswordError") != "") {
-                                                                    out.print(session.getAttribute("confirmPasswordError"));
-                                                                    session.setAttribute("confirmPasswordError", null);
-                                                                }
-                                                            
+                                                                    if (session.getAttribute("confirmPasswordError") != null && session.getAttribute("confirmPasswordError") != "") {
+                                                                        out.print(session.getAttribute("confirmPasswordError"));
+                                                                        session.setAttribute("confirmPasswordError", null);
+                                                                    }
+                                                                
       out.write("\n");
+      out.write("                                                            </span>\n");
       out.write("                                                        </div>\n");
       out.write("                                                    </div>\n");
       out.write("                                                    <div class=\"col-md-6\">\n");
       out.write("                                                        <div class=\"form-group\">\n");
       out.write("                                                            <label class=\"form-label\" for=\"birth-day\">Contact Number</label>\n");
       out.write("                                                            <input type=\"tel\" pattern=\"[0][1][0-9][0-9]{10-13}\" class=\"form-control\" placeholder=\"01234567891\" name=\"customer-contact\" value=\"\">\n");
-      out.write("                                                            ");
+      out.write("                                                            <span class=\"text-danger\">\n");
+      out.write("                                                                ");
 
-                                                                if (session.getAttribute("contactError") != null && session.getAttribute("contactError") != "") {
-                                                                    out.print(session.getAttribute("contactError"));
-                                                                    session.setAttribute("contactError", null);
-                                                                }
-                                                            
+                                                                    if (session.getAttribute("contactError") != null && session.getAttribute("contactError") != "") {
+                                                                        out.print(session.getAttribute("contactError"));
+                                                                        session.setAttribute("contactError", null);
+                                                                    }
+                                                                
       out.write("\n");
+      out.write("                                                            </span>\n");
       out.write("                                                        </div>\n");
       out.write("                                                    </div>\n");
       out.write("                                                    <div class=\"col-12\">\n");
       out.write("                                                        <ul class=\"align-center flex-wrap flex-sm-nowrap gx-4 gy-2\">\n");
       out.write("                                                            <li>\n");
-      out.write("                                                                <a href=\"#\" data-bs-dismiss=\"modal\" class=\"btn btn-lg btn-primary\">Add Customer</a>\n");
+      out.write("                                                                <input type=\"submit\" data-bs-dismiss=\"modal\" class=\"btn btn-lg btn-primary\" value=\"Add Customer\">\n");
       out.write("                                                            </li>\n");
       out.write("                                                            <li>\n");
       out.write("                                                                <a href=\"#\" data-bs-dismiss=\"modal\" class=\"link link-light\">Cancel</a>\n");
@@ -444,6 +462,7 @@ public final class customer_002dlist_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("    </div>\n");
       out.write("</div>\n");
       out.write("<script src=\"https://cdn.jsdelivr.net/npm/sweetalert2@11\"></script>\n");
+      out.write("<script src=\"https://code.jquery.com/jquery-3.6.0.min.js\"></script>\n");
       out.write("<!-- footer @e -->");
       out.write("\n");
       out.write("                </div>\n");
@@ -456,6 +475,22 @@ public final class customer_002dlist_jsp extends org.apache.jasper.runtime.HttpJ
       out.write("        <script src=\"./assets/js/bundle.js?ver=3.1.0\"></script>\n");
       out.write("        <script src=\"./assets/js/scripts.js?ver=3.1.0\"></script>\n");
       out.write("        <script src=\"./assets/js/charts/chart-ecommerce.js?ver=3.1.0\"></script>\n");
+      out.write("        ");
+
+            try {
+                int error = (Integer) session.getAttribute("error");
+                if (error == 1) {
+                    out.print("<script>Swal.fire({"
+                            + "icon: 'error',"
+                            + "title: 'Oops...',"
+                            + "text: `Adding new customer failed!`"
+                            + "})" + "</script>");
+                    session.setAttribute("error", 0);
+                }
+            } catch (Exception e) {
+
+            }
+        
       out.write("\n");
       out.write("    </body>\n");
       out.write("\n");

@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,7 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "OrderList.findAll", query = "SELECT o FROM OrderList o"),
-    @NamedQuery(name = "OrderList.findByOrderListId", query = "SELECT o FROM OrderList o WHERE o.orderListId = :orderListId")})
+    @NamedQuery(name = "OrderList.findByOrderListId", query = "SELECT o FROM OrderList o WHERE o.orderListId = :orderListId"),
+    @NamedQuery(name = "OrderList.findByQty", query = "SELECT o FROM OrderList o WHERE o.qty = :qty"),
+    @NamedQuery(name = "OrderList.findByOrderId", query = "SELECT o FROM OrderList o WHERE o.orderId = :orderId")
+})
 public class OrderList implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,6 +40,10 @@ public class OrderList implements Serializable {
     @Basic(optional = false)
     @Column(name = "ORDER_LIST_ID")
     private Integer orderListId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "QTY")
+    private int qty;
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ORDER_ID")
     @ManyToOne
     private Orders orderId;
@@ -50,12 +58,25 @@ public class OrderList implements Serializable {
         this.orderListId = orderListId;
     }
 
+    public OrderList(Integer orderListId, int qty) {
+        this.orderListId = orderListId;
+        this.qty = qty;
+    }
+
     public Integer getOrderListId() {
         return orderListId;
     }
 
     public void setOrderListId(Integer orderListId) {
         this.orderListId = orderListId;
+    }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
     }
 
     public Orders getOrderId() {
@@ -98,5 +119,5 @@ public class OrderList implements Serializable {
     public String toString() {
         return "entity.OrderList[ orderListId=" + orderListId + " ]";
     }
-    
+
 }

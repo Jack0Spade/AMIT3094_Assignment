@@ -77,7 +77,7 @@
                                                                                     <div class="form-text-hint">
                                                                                         <span class="overline-title">MYR</span>
                                                                                     </div>
-                                                                                    <input type="number" class="form-control" name="product-price" value="0">
+                                                                                    <input type="number" step="0.01" class="form-control" name="product-price" value="0">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -87,98 +87,98 @@
                                                                                 <div class="form-control-select">
                                                                                     <select name="product-category" class="form-control" >
 
-                                                                                        <%
-                                                                                            List<Category> categoryList = (List<Category>) session.getAttribute("category-list");
-                                                                                            for (Category cate : categoryList) {
-                                                                                                out.print("<option value='" + cate.getCategoryid() + "'>" + cate.getCategoryname() + "</option>");
-                                                                                        %>
-                                                                                        <% } %>
-                                                                                    </select>
-                                                                                </div>
+                                                                                    <%
+                                                                                        List<Category> categoryList = (List<Category>) session.getAttribute("category-list");
+                                                                                        for (Category cate : categoryList) {
+                                                                                            out.print("<option value='" + cate.getCategoryid() + "'>" + cate.getCategoryname() + "</option>");
+                                                                                    %>
+                                                                                    <% } %>
+                                                                                </select>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-sm-4">
-                                                                            <label class="form-label">Quantity</label>
-                                                                            <div class="form-control-wrap number-spinner-wrap">
-                                                                                <button class="btn btn-icon btn-outline-light number-spinner-btn number-minus" data-number="minus"><em class="icon ni ni-minus"></em></button>
-                                                                                <input type="number" class="form-control number-spinner" value="0" min="0" name="qty">
-                                                                                <button class="btn btn-icon btn-outline-light number-spinner-btn number-plus" data-number="plus"><em class="icon ni ni-plus"></em></button>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-sm-12 mt-2">
-                                                                            <input type="submit" class="btn btn-success" value="Save">
                                                                         </div>
                                                                     </div>
-                                                                </div><!-- .col -->
-                                                            </div>
-                                                        </div><!-- .row -->
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div><!-- .nk-block -->
-                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <label class="form-label">Quantity</label>
+                                                                        <div class="form-control-wrap number-spinner-wrap">
+                                                                            <button type="button" class="btn btn-icon btn-outline-light number-spinner-btn number-minus" data-number="minus"><em class="icon ni ni-minus"></em></button>
+                                                                            <input type="number" class="form-control number-spinner" value="0" min="0" name="qty">
+                                                                            <button type="button" class="btn btn-icon btn-outline-light number-spinner-btn number-plus" data-number="plus"><em class="icon ni ni-plus"></em></button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 mt-2">
+                                                                        <input type="submit" class="btn btn-success" value="Save">
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- .col -->
+                                                        </div>
+                                                    </div><!-- .row -->
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div><!-- .nk-block -->
                                 </div>
                             </div>
                         </div>
-                        <!-- content @e -->
-                        <%@ include file = "footer.jsp" %>
                     </div>
-                    <!-- wrap @e -->
+                    <!-- content @e -->
+                    <%@ include file = "footer.jsp" %>
                 </div>
-                <!-- main @e -->
+                <!-- wrap @e -->
             </div>
-            <!-- app-root @e -->
-            <!-- JavaScript -->
-            <script src="./assets/js/bundle.js?ver=3.1.0"></script>
-            <script src="./assets/js/scripts.js?ver=3.1.0"></script>
-            <script src="./assets/js/charts/chart-ecommerce.js?ver=3.1.0"></script>
-            <%
-                try {
-                    int error = (Integer) session.getAttribute("error");
-                    if (error == 1) {
-                        out.print("<script>Swal.fire({"
-                                + "icon: 'error',"
-                                + "title: 'Oops...',"
-                                + "text: `" + session.getAttribute("error_msg") + "`"
-                                + "})" + "</script>");
-                        session.setAttribute("error", 0);
-                    }
-                } catch (Exception e) {
-
+            <!-- main @e -->
+        </div>
+        <!-- app-root @e -->
+        <!-- JavaScript -->
+        <script src="./assets/js/bundle.js?ver=3.1.0"></script>
+        <script src="./assets/js/scripts.js?ver=3.1.0"></script>
+        <script src="./assets/js/charts/chart-ecommerce.js?ver=3.1.0"></script>
+        <%
+            try {
+                int error = (Integer) session.getAttribute("error");
+                if (error == 1) {
+                    out.print("<script>Swal.fire({"
+                            + "icon: 'error',"
+                            + "title: 'Oops...',"
+                            + "text: `" + session.getAttribute("error_msg") + "`"
+                            + "})" + "</script>");
+                    session.setAttribute("error", 0);
                 }
-            %>
+            } catch (Exception e) {
 
-            <script>
-                function delProd(e) {
-                    swal.fire({
-                        title: 'Are you sure?',
-                        text: 'You won\'t be able to revert this!',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it!',
-                        cancelButtonText: 'Cancel'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "DeleteProduct?id=<%  %>";
-                        }
-                    });
-                }
-                
-                function previewImg(event){
-                    var reader = new FileReader();
-                    reader.onload = function() {
-                      var output = document.getElementById('preview');
-                      output.src = reader.result;
-                    }
-                    reader.readAsDataURL(event.target.files[0]);
-                }
-            </script>
-        </body>
+            }
+        %>
 
-    </html>
+        <script>
+                                                                                function delProd(e) {
+                                                                                    swal.fire({
+                                                                                        title: 'Are you sure?',
+                                                                                        text: 'You won\'t be able to revert this!',
+                                                                                        icon: 'warning',
+                                                                                        showCancelButton: true,
+                                                                                        confirmButtonText: 'Yes, delete it!',
+                                                                                        cancelButtonText: 'Cancel'
+                                                                                    }).then((result) => {
+                                                                                        if (result.isConfirmed) {
+                                                                                            window.location.href = "DeleteProduct?id=<%  %>";
+                                                                                        }
+                                                                                    });
+                                                                                }
 
-    <!--SQL CODE FOR AUTO INCREMENT ID
-    CREATE TABLE Product (product_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    product_name VARCHAR(140) NOT NULL,
-    product_price DOUBLE,
-    product_image BLOB);-->
+                                                                                function previewImg(event) {
+                                                                                    var reader = new FileReader();
+                                                                                    reader.onload = function () {
+                                                                                        var output = document.getElementById('preview');
+                                                                                        output.src = reader.result;
+                                                                                    }
+                                                                                    reader.readAsDataURL(event.target.files[0]);
+                                                                                }
+        </script>
+    </body>
+
+</html>
+
+<!--SQL CODE FOR AUTO INCREMENT ID
+CREATE TABLE Product (product_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+product_name VARCHAR(140) NOT NULL,
+product_price DOUBLE,
+product_image BLOB);-->

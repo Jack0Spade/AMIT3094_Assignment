@@ -37,16 +37,15 @@ public class EditProduct extends HttpServlet {
             String productId = getString.split("=")[1];
             Query query = manager.createNamedQuery("Product.findByProductid");
             query.setParameter("productid", Integer.valueOf(productId));
-            
 
             try {
                 Product product = (Product) query.getSingleResult();
                 session.setAttribute("product-edit-detail", product);
-                
+
                 query = manager.createNamedQuery("Category.findAll");
                 List<Category> categoryList = query.getResultList();
                 session.setAttribute("category-list", categoryList);
-                
+
                 response.sendRedirect("/AMIT3094_Assignment/admin/edit-product.jsp");
             } catch (NoResultException e) {
                 response.sendRedirect("/AMIT3094_Assignment/admin/product-list");

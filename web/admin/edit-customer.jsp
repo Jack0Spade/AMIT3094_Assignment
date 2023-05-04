@@ -60,6 +60,7 @@
                                                         <div class="row mt-3">
                                                             <div class="col-sm-6">
                                                                 <input type="submit" class="btn btn-success" value="Save">
+                                                                <a onclick="delCustomer()" class="btn btn-danger">Delete</a>
                                                             </div>
                                                         </div>
                                                     </div><!-- .card-inner -->
@@ -100,7 +101,22 @@
 
             }
         %>
-
+        <script>
+            function delCustomer() {
+                swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You won\'t be able to revert this!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "DeleteCustomer?id=<%= customer.getCustomerId()%>";
+                    }
+                });
+            }
+        </script>
 
     </body>
 

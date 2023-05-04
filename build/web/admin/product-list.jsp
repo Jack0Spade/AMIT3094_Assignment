@@ -61,12 +61,6 @@
                                         </thead>
                                         <tbody>
                                             <%
-                                                //img
-                                                //name
-                                                //cate
-                                                //price
-                                                //stock
-                                               
                                                 for (Product prod : prodList) {
 
                                                     String base64img = Base64.getEncoder().encodeToString(prod.getProductimage());

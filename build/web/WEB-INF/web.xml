@@ -44,6 +44,30 @@
         <servlet-name>UpdateCustomer</servlet-name>
         <servlet-class>assignment.admin.UpdateCustomer</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteCustomer</servlet-name>
+        <servlet-class>assignment.admin.DeleteCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetOrdersList</servlet-name>
+        <servlet-class>assignment.admin.GetOrdersList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetOrderDetails</servlet-name>
+        <servlet-class>assignment.admin.GetOrderDetails</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetOrdersProduct</servlet-name>
+        <servlet-class>assignment.admin.GetOrdersProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteOrder</servlet-name>
+        <servlet-class>assignment.admin.DeleteOrder</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CompleteOrder</servlet-name>
+        <servlet-class>assignment.admin.CompleteOrder</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductController</servlet-name>
         <url-pattern>/admin/product-list</url-pattern>
@@ -87,6 +111,30 @@
     <servlet-mapping>
         <servlet-name>UpdateCustomer</servlet-name>
         <url-pattern>/admin/UpdateCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCustomer</servlet-name>
+        <url-pattern>/admin/DeleteCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetOrdersList</servlet-name>
+        <url-pattern>/admin/GetOrdersList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetOrderDetails</servlet-name>
+        <url-pattern>/admin/GetOrderDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetOrdersProduct</servlet-name>
+        <url-pattern>/admin/GetOrdersProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteOrder</servlet-name>
+        <url-pattern>/admin/DeleteOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CompleteOrder</servlet-name>
+        <url-pattern>/admin/CompleteOrder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

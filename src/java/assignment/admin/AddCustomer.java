@@ -81,6 +81,7 @@ public class AddCustomer extends HttpServlet {
             response.sendRedirect("/AMIT3094_Assignment/admin/customer-list.jsp");
             return;
         } else {
+            
             try {
                 Query query = manager.createNamedQuery("Customer.findByEmail");
                 query.setParameter("email", request.getParameter("customer-email"));
@@ -96,6 +97,7 @@ public class AddCustomer extends HttpServlet {
                 session.setAttribute("error", e);
                 response.sendRedirect("/AMIT3094_Assignment/admin/error.jsp");
             }
+            
         }
 
         if (request.getParameter("customer-password").isEmpty()) {
@@ -128,7 +130,7 @@ public class AddCustomer extends HttpServlet {
             response.sendRedirect("/AMIT3094_Assignment/admin/edit-customer.jsp");
             return;
         } else {
-            newCustomer.setCustomerContact(request.getParameter("customer-list.jsp"));
+            newCustomer.setCustomerContact(request.getParameter("customer-contact"));
         }
 
         try {

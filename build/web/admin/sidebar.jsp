@@ -49,8 +49,27 @@
                             <li class="nk-menu-item">
                                 <a href="customer-list.jsp" class="nk-menu-link"><span class="nk-menu-text">Customer Lists</span></a>
                             </li>
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-tile-thumb-fill"></em></span>
+                            <span class="nk-menu-text">Orders</span>
+                        </a>
+                        <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="add-product.jsp" class="nk-menu-link"><span class="nk-menu-text">Add Customer</span></a>
+                                <a href="order-list.jsp" class="nk-menu-link"><span class="nk-menu-text">Orders Lists</span></a>
+                            </li>
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-tile-thumb-fill"></em></span>
+                            <span class="nk-menu-text">Staff</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="staff-list.jsp" class="nk-menu-link"><span class="nk-menu-text">Staff Lists</span></a>
                             </li>
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->

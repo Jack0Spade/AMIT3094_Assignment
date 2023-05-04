@@ -36,7 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Staff.findByStaffContact", query = "SELECT s FROM Staff s WHERE s.staffContact = :staffContact"),
     @NamedQuery(name = "Staff.findByEmailAndPassword", query = "SELECT s FROM Staff s WHERE s.email = :email AND s.password = :password")
 })
-
 public class Staff implements Serializable {
 
     private static final long serialVersionUID = 1L;
