@@ -1,3 +1,23 @@
+<%@page import="java.util.Base64"%>
+<%@page import="java.util.Comparator"%>
+<%@page import="java.util.Collections"%>
+<%@page import="entity.Product"%>
+<%@page import="entity.OrderList"%>
+<%@page import="java.time.ZoneId"%>
+<%@page import="java.time.YearMonth"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="java.util.LinkedHashMap"%>
+<%@page import="com.sun.xml.wss.util.DateUtils"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.DateFormat"%>
+<%@page import="entity.Payment"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html lang="zxx" class="js">
 
@@ -8,11 +28,81 @@
             <!-- main @s -->
             <div class="nk-main ">
                 <%@ include file = "sidebar.jsp" %>
-                
-                
+
+
                 <!-- wrap @s -->
                 <div class="nk-wrap ">
-                            <%@ include file = "navbar.jsp" %>
+                    <%@ include file = "navbar.jsp" %>
+                    <jsp:include page="/admin/GetReportData"></jsp:include>
+
+                    <%
+                        List<Payment> paymentList = (List<Payment>) session.getAttribute("payment-list");
+                        List<OrderList> orderList = (List<OrderList>) session.getAttribute("orders-list-report");
+                        List<Double> paymentsByDay = new ArrayList<Double>();
+
+                        // create a Map to store the total quantity sold for each product
+                        Map<Product, Integer> productQuantities = new HashMap<Product, Integer>();
+
+                        // loop through each order and update the productQuantities map
+                        for (OrderList order : orderList) {
+                            Product product = order.getProductId();
+                            int quantity = order.getQty();
+
+                            // check if the product ID is already in the map
+                            if (productQuantities.containsKey(product)) {
+                                int currentQuantity = productQuantities.get(product);
+                                productQuantities.put(product, currentQuantity + quantity);
+                            } else {
+                                productQuantities.put(product, quantity);
+                            }
+                        }
+
+                        // create a list of map entries
+                        List<Map.Entry<Product, Integer>> entries = new ArrayList<Map.Entry<Product, Integer>>(productQuantities.entrySet());
+
+                        // sort the list using a comparator
+                        Collections.sort(entries, new Comparator<Map.Entry<Product, Integer>>() {
+                            @Override
+                            public int compare(Map.Entry<Product, Integer> e1, Map.Entry<Product, Integer> e2) {
+                                return e2.getValue().compareTo(e1.getValue()); // sort in descending order by value
+                            }
+                        });
+
+                        // create a new map using the sorted entries
+                        Map<Product, Integer> sortedMap = new LinkedHashMap<Product, Integer>();
+                        for (Map.Entry<Product, Integer> entry : entries) {
+                            sortedMap.put(entry.getKey(), entry.getValue());
+                        }
+
+                        Calendar calendar = Calendar.getInstance();
+                        int currentMonth = calendar.get(Calendar.MONTH);
+                        int currentYear = calendar.get(Calendar.YEAR);
+                        calendar.set(currentYear, currentMonth, 1);
+
+                        // Get number of days in the current month
+                        int numDays = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+                        // Loop through each day in the month
+                        for (int i = 1; i <= numDays; i++) {
+                            LocalDate currentDate = LocalDate.of(currentYear, currentMonth + 1, i);
+
+                            // Create a list to store payments for the current day
+                            double paymentsForDay = 0;
+
+                            // Loop through each payment and compare dates
+                            for (Payment payment : paymentList) {
+                                LocalDate paymentDate = payment.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                                if (paymentDate.compareTo(currentDate) == 0) {
+                                    out.print(payment.getAmount() + ",");
+                                    paymentsForDay += payment.getAmount();
+                                }
+                            }
+                            paymentsByDay.add(paymentsForDay);
+                        }
+
+
+                    %>
                     <!-- content @s -->
                     <div class="nk-content ">
                         <div class="container-fluid">
@@ -21,26 +111,14 @@
                                     <div class="nk-block-head nk-block-head-sm">
                                         <div class="nk-block-between">
                                             <div class="nk-block-head-content">
-                                                <h3 class="nk-block-title page-title">Dashboard</h3>
+                                                <h3 class="nk-block-title page-title">Website Analytics</h3>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
                                                 <div class="toggle-wrap nk-block-tools-toggle">
                                                     <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
                                                     <div class="toggle-expand-content" data-content="pageMenu">
                                                         <ul class="nk-block-tools g-3">
-                                                            <li>
-                                                                <div class="drodown">
-                                                                    <a href="#" class="dropdown-toggle btn btn-white btn-dim btn-outline-light" data-bs-toggle="dropdown"><em class="d-none d-sm-inline icon ni ni-calender-date"></em><span><span class="d-none d-md-inline">Last</span> 30 Days</span><em class="dd-indc icon ni ni-chevron-right"></em></a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            <li><a href="#"><span>Last 30 Days</span></a></li>
-                                                                            <li><a href="#"><span>Last 6 Months</span></a></li>
-                                                                            <li><a href="#"><span>Last 1 Years</span></a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li class="nk-block-tools-opt"><a href="#" class="btn btn-primary"><em class="icon ni ni-reports"></em><span>Reports</span></a></li>
+                                                            <li class="nk-block-tools-opt"><button type="button" onclick="window.print()" class="btn btn-primary"><em class="icon ni ni-reports"></em><span>Print</span></button></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -49,447 +127,85 @@
                                     </div><!-- .nk-block-head -->
                                     <div class="nk-block">
                                         <div class="row g-gs">
-                                            <div class="col-xxl-3 col-sm-6">
-                                                <div class="card">
-                                                    <div class="nk-ecwg nk-ecwg6">
-                                                        <div class="card-inner">
-                                                            <div class="card-title-group">
-                                                                <div class="card-title">
-                                                                    <h6 class="title">Today Orders</h6>
-                                                                </div>
-                                                            </div>
-                                                            <div class="data">
-                                                                <div class="data-group">
-                                                                    <div class="amount">1,945</div>
-                                                                    <div class="nk-ecwg6-ck">
-                                                                        <canvas class="ecommerce-line-chart-s3" id="todayOrders"></canvas>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="info"><span class="change up text-danger"><em class="icon ni ni-arrow-long-up"></em>4.63%</span><span> vs. last week</span></div>
-                                                            </div>
-                                                        </div><!-- .card-inner -->
-                                                    </div><!-- .nk-ecwg -->
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
-                                            <div class="col-xxl-3 col-sm-6">
-                                                <div class="card">
-                                                    <div class="nk-ecwg nk-ecwg6">
-                                                        <div class="card-inner">
-                                                            <div class="card-title-group">
-                                                                <div class="card-title">
-                                                                    <h6 class="title">Today Revenue</h6>
-                                                                </div>
-                                                            </div>
-                                                            <div class="data">
-                                                                <div class="data-group">
-                                                                    <div class="amount">$2,338</div>
-                                                                    <div class="nk-ecwg6-ck">
-                                                                        <canvas class="ecommerce-line-chart-s3" id="todayRevenue"></canvas>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="info"><span class="change down text-danger"><em class="icon ni ni-arrow-long-down"></em>2.34%</span><span> vs. last week</span></div>
-                                                            </div>
-                                                        </div><!-- .card-inner -->
-                                                    </div><!-- .nk-ecwg -->
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
-                                            <div class="col-xxl-3 col-sm-6">
-                                                <div class="card">
-                                                    <div class="nk-ecwg nk-ecwg6">
-                                                        <div class="card-inner">
-                                                            <div class="card-title-group">
-                                                                <div class="card-title">
-                                                                    <h6 class="title">Today Customers</h6>
-                                                                </div>
-                                                            </div>
-                                                            <div class="data">
-                                                                <div class="data-group">
-                                                                    <div class="amount">847</div>
-                                                                    <div class="nk-ecwg6-ck">
-                                                                        <canvas class="ecommerce-line-chart-s3" id="todayCustomers"></canvas>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="info"><span class="change up text-danger"><em class="icon ni ni-arrow-long-up"></em>4.63%</span><span> vs. last week</span></div>
-                                                            </div>
-                                                        </div><!-- .card-inner -->
-                                                    </div><!-- .nk-ecwg -->
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
-                                            <div class="col-xxl-3 col-sm-6">
-                                                <div class="card">
-                                                    <div class="nk-ecwg nk-ecwg6">
-                                                        <div class="card-inner">
-                                                            <div class="card-title-group">
-                                                                <div class="card-title">
-                                                                    <h6 class="title">Today Visitors</h6>
-                                                                </div>
-                                                            </div>
-                                                            <div class="data">
-                                                                <div class="data-group">
-                                                                    <div class="amount">23,485</div>
-                                                                    <div class="nk-ecwg6-ck">
-                                                                        <canvas class="ecommerce-line-chart-s3" id="todayVisitors"></canvas>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="info"><span class="change down text-danger"><em class="icon ni ni-arrow-long-down"></em>2.34%</span><span> vs. last week</span></div>
-                                                            </div>
-                                                        </div><!-- .card-inner -->
-                                                    </div><!-- .nk-ecwg -->
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
-                                            <div class="col-xxl-6">
-                                                <div class="card card-full">
-                                                    <div class="nk-ecwg nk-ecwg8 h-100">
-                                                        <div class="card-inner">
-                                                            <div class="card-title-group mb-3">
-                                                                <div class="card-title">
-                                                                    <h6 class="title">Sales Statistics</h6>
-                                                                </div>
-                                                                <div class="card-tools">
-                                                                    <div class="dropdown">
-                                                                        <a href="#" class="dropdown-toggle link link-light link-sm dropdown-indicator" data-bs-toggle="dropdown">Weekly</a>
-                                                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                            <ul class="link-list-opt no-bdr">
-                                                                                <li><a href="#"><span>Daily</span></a></li>
-                                                                                <li><a href="#" class="active"><span>Weekly</span></a></li>
-                                                                                <li><a href="#"><span>Monthly</span></a></li>
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <ul class="nk-ecwg8-legends">
-                                                                <li>
-                                                                    <div class="title">
-                                                                        <span class="dot dot-lg sq" data-bg="#6576ff"></span>
-                                                                        <span>Total Order</span>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="title">
-                                                                        <span class="dot dot-lg sq" data-bg="#eb6459"></span>
-                                                                        <span>Cancelled Order</span>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                            <div class="nk-ecwg8-ck">
-                                                                <canvas class="ecommerce-line-chart-s4" id="salesStatistics"></canvas>
-                                                            </div>
-                                                            <div class="chart-label-group ps-5">
-                                                                <div class="chart-label">01 Jul, 2020</div>
-                                                                <div class="chart-label">30 Jul, 2020</div>
-                                                            </div>
-                                                        </div><!-- .card-inner -->
-                                                    </div>
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
-                                            <div class="col-xxl-3 col-md-6">
-                                                <div class="card card-full overflow-hidden">
-                                                    <div class="nk-ecwg nk-ecwg7 h-100">
-                                                        <div class="card-inner flex-grow-1">
-                                                            <div class="card-title-group mb-4">
-                                                                <div class="card-title">
-                                                                    <h6 class="title">Order Statistics</h6>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-ecwg7-ck">
-                                                                <canvas class="ecommerce-doughnut-s1" id="orderStatistics"></canvas>
-                                                            </div>
-                                                            <ul class="nk-ecwg7-legends">
-                                                                <li>
-                                                                    <div class="title">
-                                                                        <span class="dot dot-lg sq" data-bg="#816bff"></span>
-                                                                        <span>Completed</span>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="title">
-                                                                        <span class="dot dot-lg sq" data-bg="#13c9f2"></span>
-                                                                        <span>Processing</span>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="title">
-                                                                        <span class="dot dot-lg sq" data-bg="#ff82b7"></span>
-                                                                        <span>Cancelled</span>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                        </div><!-- .card-inner -->
-                                                    </div>
-                                                </div><!-- .card -->
-                                            </div><!-- .col -->
-                                            <div class="col-xxl-3 col-md-6">
+                                            <div class="col-lg-12 col-xxl-12">
                                                 <div class="card h-100">
                                                     <div class="card-inner">
-                                                        <div class="card-title-group mb-2">
-                                                            <div class="card-title">
-                                                                <h6 class="title">Store Statistics</h6>
+                                                        <div class="card-title-group pb-3 g-2">
+                                                            <div class="card-title card-title-sm">
+                                                                <h6 class="title">Revenue Overview</h6>
+                                                                <p>The website monthly revenue graphed and calculated</p>
                                                             </div>
                                                         </div>
-                                                        <ul class="nk-store-statistics">
-                                                            <li class="item">
-                                                                <div class="info">
-                                                                    <div class="title">Orders</div>
-                                                                    <div class="count">1,795</div>
+                                                        <div class="analytic-ov">
+                                                            <div class="analytic-data-group analytic-ov-group g-3">
+                                                                <div class="analytic-data analytic-ov-data">
+                                                                    <div class="title">Total Revenue</div>
+                                                                    <div class="amount"><%= String.format("%.2f",session.getAttribute("total-revenue")) %> MYR</div>
                                                                 </div>
-                                                                <em class="icon bg-primary-dim ni ni-bag"></em>
-                                                            </li>
-                                                            <li class="item">
-                                                                <div class="info">
-                                                                    <div class="title">Customers</div>
-                                                                    <div class="count">2,327</div>
+                                                                <div class="analytic-data analytic-ov-data">
+                                                                    <div class="title">Today's Revenue</div>
+                                                                    <div class="amount"><%= String.format("%.2f",session.getAttribute("today-revenue")) %> MYR</div>
                                                                 </div>
-                                                                <em class="icon bg-info-dim ni ni-users"></em>
-                                                            </li>
-                                                            <li class="item">
-                                                                <div class="info">
-                                                                    <div class="title">Products</div>
-                                                                    <div class="count">674</div>
-                                                                </div>
-                                                                <em class="icon bg-pink-dim ni ni-box"></em>
-                                                            </li>
-                                                            <li class="item">
-                                                                <div class="info">
-                                                                    <div class="title">Categories</div>
-                                                                    <div class="count">68</div>
-                                                                </div>
-                                                                <em class="icon bg-purple-dim ni ni-server"></em>
-                                                            </li>
-                                                        </ul>
-                                                    </div><!-- .card-inner -->
+
+                                                            </div>
+                                                            <div class="analytic-ov-ck">
+                                                                <canvas class="sales-data" id="analyticOvData"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
-                                            <div class="col-xxl-8">
-                                                <div class="card card-full">
-                                                    <div class="card-inner">
+
+                                            <div class="col-lg-7 col-xxl-6">
+                                                <div class="card h-100">
+                                                    <div class="card-inner mb-n2">
                                                         <div class="card-title-group">
-                                                            <div class="card-title">
-                                                                <h6 class="title">Recent Orders</h6>
+                                                            <div class="card-title card-title-sm">
+                                                                <h6 class="title">Top Selling Products</h6>
+                                                                <p>Top 5 products sold in this month.</p>
                                                             </div>
+
                                                         </div>
                                                     </div>
-                                                    <div class="nk-tb-list mt-n2">
+
+                                                    <div class="nk-tb-list is-loose traffic-channel-table">
                                                         <div class="nk-tb-item nk-tb-head">
-                                                            <div class="nk-tb-col"><span>Order No.</span></div>
-                                                            <div class="nk-tb-col tb-col-sm"><span>Customer</span></div>
-                                                            <div class="nk-tb-col tb-col-md"><span>Date</span></div>
-                                                            <div class="nk-tb-col"><span>Amount</span></div>
-                                                            <div class="nk-tb-col"><span class="d-none d-sm-inline">Status</span></div>
-                                                        </div>
+                                                            <div class="nk-tb-col nk-tb-channel"><span>Product Image</span></div>
+                                                            <div class="nk-tb-col nk-tb-sessions"><span>Product Name</span></div>
+                                                            <div class="nk-tb-col nk-tb-prev-sessions"><span>Quantity Sold</span></div>
+                                                            <div class="nk-tb-col nk-tb-change"><span>Total</span></div>
+                                                        </div><!-- .nk-tb-head -->
+                                                        <%                                                        for (Map.Entry<Product, Integer> entry : sortedMap.entrySet()) {
+                                                                Product product = entry.getKey();
+                                                                int quantity = entry.getValue();
+
+                                                                String base64img = Base64.getEncoder().encodeToString(product.getProductimage());
+                                                        %>
                                                         <div class="nk-tb-item">
-                                                            <div class="nk-tb-col">
-                                                                <span class="tb-lead"><a href="#">#95954</a></span>
+                                                            <div class="nk-tb-col nk-tb-channel col-4">
+                                                                <img src="data:image/png;base64, <%= base64img%>" alt="" class="thumb w-25">
                                                             </div>
-                                                            <div class="nk-tb-col tb-col-sm">
-                                                                <div class="user-card">
-                                                                    <div class="user-avatar sm bg-purple-dim">
-                                                                        <span>AB</span>
-                                                                    </div>
-                                                                    <div class="user-name">
-                                                                        <span class="tb-lead">Abu Bin Ishtiyak</span>
-                                                                    </div>
-                                                                </div>
+                                                            <div class="nk-tb-col nk-tb-sessions">
+                                                                <span class="tb-sub tb-amount"><span><%= product.getProductname()%></span></span>
                                                             </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-sub">02/11/2020</span>
+                                                            <div class="nk-tb-col nk-tb-prev-sessions">
+                                                                <span class="tb-sub tb-amount"><span><%= quantity%></span></span>
                                                             </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="tb-sub tb-amount">4,596.75 <span>USD</span></span>
+                                                            <div class="nk-tb-col nk-tb-change">
+                                                                <span class="tb-sub"><span><%= String.format("%.2f MYR", product.getPrice() * quantity)%></span></span>
                                                             </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="badge badge-dot badge-dot-xs bg-success">Paid</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col">
-                                                                <span class="tb-lead"><a href="#">#95850</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm">
-                                                                <div class="user-card">
-                                                                    <div class="user-avatar sm bg-azure-dim">
-                                                                        <span>DE</span>
-                                                                    </div>
-                                                                    <div class="user-name">
-                                                                        <span class="tb-lead">Desiree Edwards</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-sub">02/02/2020</span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="tb-sub tb-amount">596.75 <span>USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="badge badge-dot badge-dot-xs bg-danger">Cancelled</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col">
-                                                                <span class="tb-lead"><a href="#">#95812</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm">
-                                                                <div class="user-card">
-                                                                    <div class="user-avatar sm bg-warning-dim">
-                                                                        <img src="./images/avatar/b-sm.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="user-name">
-                                                                        <span class="tb-lead">Blanca Schultz</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-sub">02/01/2020</span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="tb-sub tb-amount">199.99 <span>USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="badge badge-dot badge-dot-xs bg-success">Paid</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col">
-                                                                <span class="tb-lead"><a href="#">#95256</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm">
-                                                                <div class="user-card">
-                                                                    <div class="user-avatar sm bg-purple-dim">
-                                                                        <span>NL</span>
-                                                                    </div>
-                                                                    <div class="user-name">
-                                                                        <span class="tb-lead">Naomi Lawrence</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-sub">01/29/2020</span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="tb-sub tb-amount">1099.99 <span>USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="badge badge-dot badge-dot-xs bg-success">Paid</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col">
-                                                                <span class="tb-lead"><a href="#">#95135</a></span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-sm">
-                                                                <div class="user-card">
-                                                                    <div class="user-avatar sm bg-success-dim">
-                                                                        <span>CH</span>
-                                                                    </div>
-                                                                    <div class="user-name">
-                                                                        <span class="tb-lead">Cassandra Hogan</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span class="tb-sub">01/29/2020</span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="tb-sub tb-amount">1099.99 <span>USD</span></span>
-                                                            </div>
-                                                            <div class="nk-tb-col">
-                                                                <span class="badge badge-dot badge-dot-xs bg-warning">Due</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><!-- .card -->
-                                            </div>
-                                            <div class="col-xxl-4 col-md-8 col-lg-6">
-                                                <div class="card h-100">
-                                                    <div class="card-inner">
-                                                        <div class="card-title-group mb-2">
-                                                            <div class="card-title">
-                                                                <h6 class="title">Top products</h6>
-                                                            </div>
-                                                            <div class="card-tools">
-                                                                <div class="dropdown">
-                                                                    <a href="#" class="dropdown-toggle link link-light link-sm dropdown-indicator" data-bs-toggle="dropdown">Weekly</a>
-                                                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            <li><a href="#"><span>Daily</span></a></li>
-                                                                            <li><a href="#" class="active"><span>Weekly</span></a></li>
-                                                                            <li><a href="#"><span>Monthly</span></a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <ul class="nk-top-products">
-                                                            <li class="item">
-                                                                <div class="thumb">
-                                                                    <img src="./images/product/a.png" alt="">
-                                                                </div>
-                                                                <div class="info">
-                                                                    <div class="title">Pink Fitness Tracker</div>
-                                                                    <div class="price">$99.00</div>
-                                                                </div>
-                                                                <div class="total">
-                                                                    <div class="amount">$990.00</div>
-                                                                    <div class="count">10 Sold</div>
-                                                                </div>
-                                                            </li>
-                                                            <li class="item">
-                                                                <div class="thumb">
-                                                                    <img src="./images/product/b.png" alt="">
-                                                                </div>
-                                                                <div class="info">
-                                                                    <div class="title">Purple Smartwatch</div>
-                                                                    <div class="price">$99.00</div>
-                                                                </div>
-                                                                <div class="total">
-                                                                    <div class="amount">$990.00</div>
-                                                                    <div class="count">10 Sold</div>
-                                                                </div>
-                                                            </li>
-                                                            <li class="item">
-                                                                <div class="thumb">
-                                                                    <img src="./images/product/c.png" alt="">
-                                                                </div>
-                                                                <div class="info">
-                                                                    <div class="title">Black Smartwatch</div>
-                                                                    <div class="price">$99.00</div>
-                                                                </div>
-                                                                <div class="total">
-                                                                    <div class="amount">$990.00</div>
-                                                                    <div class="count">10 Sold</div>
-                                                                </div>
-                                                            </li>
-                                                            <li class="item">
-                                                                <div class="thumb">
-                                                                    <img src="./images/product/d.png" alt="">
-                                                                </div>
-                                                                <div class="info">
-                                                                    <div class="title">Black Headphones</div>
-                                                                    <div class="price">$99.00</div>
-                                                                </div>
-                                                                <div class="total">
-                                                                    <div class="amount">$990.00</div>
-                                                                    <div class="count">10 Sold</div>
-                                                                </div>
-                                                            </li>
-                                                            <li class="item">
-                                                                <div class="thumb">
-                                                                    <img src="./images/product/e.png" alt="">
-                                                                </div>
-                                                                <div class="info">
-                                                                    <div class="title">iPhone 7 Headphones</div>
-                                                                    <div class="price">$99.00</div>
-                                                                </div>
-                                                                <div class="total">
-                                                                    <div class="amount">$990.00</div>
-                                                                    <div class="count">10 Sold</div>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div><!-- .card-inner -->
+
+                                                        </div><!-- .nk-tb-item -->
+                                                        <%
+                                                            }
+                                                        %>
+                                                    </div><!-- .nk-tb-list -->
+
                                                 </div><!-- .card -->
                                             </div><!-- .col -->
+
+
+
                                         </div><!-- .row -->
                                     </div><!-- .nk-block -->
                                 </div>
@@ -504,133 +220,182 @@
             <!-- main @e -->
         </div>
         <!-- app-root @e -->
-        <!-- select region modal -->
-        <div class="modal fade" tabindex="-1" role="dialog" id="region">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                    <div class="modal-body modal-body-md">
-                        <h5 class="title mb-4">Select Your Country</h5>
-                        <div class="nk-country-region">
-                            <ul class="country-list text-center gy-2">
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/arg.png" alt="" class="country-flag">
-                                        <span class="country-name">Argentina</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/aus.png" alt="" class="country-flag">
-                                        <span class="country-name">Australia</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/bangladesh.png" alt="" class="country-flag">
-                                        <span class="country-name">Bangladesh</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/canada.png" alt="" class="country-flag">
-                                        <span class="country-name">Canada <small>(English)</small></span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/china.png" alt="" class="country-flag">
-                                        <span class="country-name">Centrafricaine</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/china.png" alt="" class="country-flag">
-                                        <span class="country-name">China</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/french.png" alt="" class="country-flag">
-                                        <span class="country-name">France</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/germany.png" alt="" class="country-flag">
-                                        <span class="country-name">Germany</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/iran.png" alt="" class="country-flag">
-                                        <span class="country-name">Iran</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/italy.png" alt="" class="country-flag">
-                                        <span class="country-name">Italy</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/mexico.png" alt="" class="country-flag">
-                                        <span class="country-name">México</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/philipine.png" alt="" class="country-flag">
-                                        <span class="country-name">Philippines</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/portugal.png" alt="" class="country-flag">
-                                        <span class="country-name">Portugal</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/s-africa.png" alt="" class="country-flag">
-                                        <span class="country-name">South Africa</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/spanish.png" alt="" class="country-flag">
-                                        <span class="country-name">Spain</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/switzerland.png" alt="" class="country-flag">
-                                        <span class="country-name">Switzerland</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/uk.png" alt="" class="country-flag">
-                                        <span class="country-name">United Kingdom</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="country-item">
-                                        <img src="./images/flags/english.png" alt="" class="country-flag">
-                                        <span class="country-name">United State</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div><!-- .modal-content -->
-            </div><!-- .modla-dialog -->
-        </div><!-- .modal -->
         <!-- JavaScript -->
         <script src="./assets/js/bundle.js?ver=3.1.0"></script>
         <script src="./assets/js/scripts.js?ver=3.1.0"></script>
-        <script src="./assets/js/charts/chart-ecommerce.js?ver=3.1.0"></script>
+        <script src="./assets/js/charts/chart-analytics.js?ver=3.1.0"></script>
+        <script src="./assets/js/libs/jqvmap.js?ver=3.1.0"></script>
+        <script>
+
+
+            $(document).ready(function () {
+                // get current month and year
+                var today = new Date();
+                var currentMonth = today.getMonth();
+                var currentYear = today.getFullYear();
+                var month = new Date().toLocaleString('default', {month: 'short'});
+
+                // get number of days in current month
+                var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+                // generate array of days
+                var days = [];
+                for (var i = 1; i <= daysInMonth; i++) {
+                    var day = ('0' + i).slice(-2); // add leading zero if necessary
+                    days.push(day + ' ' + month);
+                }
+
+                console.log(days);
+
+                var analyticOvData = {
+                    labels: days,
+                    dataUnit: 'People',
+                    lineTension: .1,
+                    datasets: [{
+                            label: "Current Month",
+                            color: "#9d72ff",
+                            dash: 0,
+                            background: NioApp.hexRGB('#9d72ff', .15),
+                            data: [<%                                for (Double payment : paymentsByDay) {
+                                    out.print(payment + ", ");
+                                }
+            %>]
+                        }]
+                };
+
+                function analyticsLineLarge(selector, set_data) {
+                    var $selector = selector ? $(selector) : $('.sales-data');
+                    $selector.each(function () {
+                        var $self = $(this),
+                                _self_id = $self.attr('id'),
+                                _get_data = typeof set_data === 'undefined' ? eval(_self_id) : set_data;
+                        var selectCanvas = document.getElementById(_self_id).getContext("2d");
+                        var chart_data = [];
+                        for (var i = 0; i < _get_data.datasets.length; i++) {
+                            chart_data.push({
+                                label: _get_data.datasets[i].label,
+                                tension: _get_data.lineTension,
+                                backgroundColor: _get_data.datasets[i].background,
+                                borderWidth: 2,
+                                borderDash: _get_data.datasets[i].dash,
+                                borderColor: _get_data.datasets[i].color,
+                                pointBorderColor: 'transparent',
+                                pointBackgroundColor: 'transparent',
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: _get_data.datasets[i].color,
+                                pointBorderWidth: 2,
+                                pointHoverRadius: 4,
+                                pointHoverBorderWidth: 2,
+                                pointRadius: 4,
+                                pointHitRadius: 4,
+                                data: _get_data.datasets[i].data
+                            });
+                        }
+                        var chart = new Chart(selectCanvas, {
+                            type: 'line',
+                            data: {
+                                labels: _get_data.labels,
+                                datasets: chart_data
+                            },
+                            options: {
+                                legend: {
+                                    display: _get_data.legend ? _get_data.legend : false,
+                                    rtl: NioApp.State.isRTL,
+                                    labels: {
+                                        boxWidth: 12,
+                                        padding: 20,
+                                        fontColor: '#6783b8'
+                                    }
+                                },
+                                maintainAspectRatio: false,
+                                tooltips: {
+                                    enabled: true,
+                                    rtl: NioApp.State.isRTL,
+                                    callbacks: {
+                                        title: function title(tooltipItem, data) {
+                                            return data['labels'][tooltipItem[0]['index']];
+                                        },
+                                        label: function label(tooltipItem, data) {
+                                            return data.datasets[tooltipItem.datasetIndex]['data'][tooltipItem['index']];
+                                        }
+                                    },
+                                    backgroundColor: '#1c2b46',
+                                    titleFontSize: 13,
+                                    titleFontColor: '#fff',
+                                    titleMarginBottom: 6,
+                                    bodyFontColor: '#fff',
+                                    bodyFontSize: 12,
+                                    bodySpacing: 4,
+                                    yPadding: 10,
+                                    xPadding: 10,
+                                    footerMarginTop: 0,
+                                    displayColors: false
+                                },
+                                scales: {
+                                    yAxes: [{
+                                            display: true,
+                                            position: NioApp.State.isRTL ? "right" : "left",
+                                            ticks: {
+                                                beginAtZero: true,
+                                                fontSize: 12,
+                                                fontColor: '#9eaecf',
+                                                padding: 8,
+                                                stepSize: 2400
+                                            },
+                                            gridLines: {
+                                                color: NioApp.hexRGB("#526484", .2),
+                                                tickMarkLength: 0,
+                                                zeroLineColor: NioApp.hexRGB("#526484", .2)
+                                            }
+                                        }],
+                                    xAxes: [{
+                                            display: false,
+                                            ticks: {
+                                                fontSize: 12,
+                                                fontColor: '#9eaecf',
+                                                source: 'auto',
+                                                padding: 0,
+                                                reverse: NioApp.State.isRTL
+                                            },
+                                            gridLines: {
+                                                color: "transparent",
+                                                tickMarkLength: 0,
+                                                zeroLineColor: 'transparent',
+                                                offsetGridLines: true
+                                            }
+                                        }]
+                                }
+                            }
+                        });
+                    });
+                }
+
+                analyticsLineLarge(".sales-data", analyticOvData);
+            });
+
+
+
+
+
+        </script>
     </body>
 
+
+
 </html>
+
+<!--SQL CODE FOR AUTO INCREMENT ID
+CREATE TABLE Product (product_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+product_name VARCHAR(140) NOT NULL,
+product_price DOUBLE,
+product_image BLOB);
+
+
+
+
+
+
+fix list
+1) product edit spinner
+2) product edit success message
+-->

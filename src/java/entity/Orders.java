@@ -31,7 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Orders.findByOrderId", query = "SELECT o FROM Orders o WHERE o.orderId = :orderId"),
     @NamedQuery(name = "Orders.findByStatus", query = "SELECT o FROM Orders o WHERE o.status = :status"),
     @NamedQuery(name = "Orders.findByAdressLineOne", query = "SELECT o FROM Orders o WHERE o.adressLineOne = :adressLineOne"),
-    @NamedQuery(name = "Orders.findByAddressLineTwo", query = "SELECT o FROM Orders o WHERE o.addressLineTwo = :addressLineTwo")})
+    @NamedQuery(name = "Orders.findByAddressLineTwo", query = "SELECT o FROM Orders o WHERE o.addressLineTwo = :addressLineTwo"),
+    @NamedQuery(name = "Orders.findByCustomerId", query = "SELECT o FROM Orders o WHERE o.customerId = :customerId")
+})
 public class Orders implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -134,5 +136,5 @@ public class Orders implements Serializable {
     public String toString() {
         return "entity.Orders[ orderId=" + orderId + " ]";
     }
-    
+
 }

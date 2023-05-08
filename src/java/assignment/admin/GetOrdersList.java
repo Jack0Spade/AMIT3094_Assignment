@@ -40,28 +40,42 @@ public class GetOrdersList extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
+        String getString = request.getQueryString();
+        List<Orders> ordersList;
+        Query query = null;
+
+        if (RoleAccessManager.AllowManagerOnly(session)) {
+            response.sendRedirect("/AMIT3094_Assignment/admin/403-error.jsp");
+            return;
+        }
+
         try {
-            Query query = manager.createNamedQuery("Orders.findAll");
-            //retrieve result and store into SubjectList
-            List<Orders> ordersList = query.getResultList();
+            if (getString != null) {
+                String filter = getString.split("=")[1];
+
+                if (filter.equals("day")) {
+                    query = manager.createQuery("SELECT o FROM Orders o WHERE FUNCTION('YEAR', o.paymentId.date) = FUNCTION('YEAR', CURRENT_DATE) AND FUNCTION('MONTH', o.paymentId.date) = FUNCTION('MONTH', CURRENT_DATE) AND FUNCTION('DAY', o.paymentId.date) = FUNCTION('DAY', CURRENT_DATE)");
+                } else if (filter.equals("month")) {
+                    query = manager.createQuery("SELECT o FROM Orders o WHERE FUNCTION('YEAR', o.paymentId.date) = FUNCTION('YEAR', CURRENT_DATE) AND FUNCTION('MONTH', o.paymentId.date) = FUNCTION('MONTH', CURRENT_DATE)");
+
+                } else if (filter.equals("year")) {
+                    query = manager.createQuery("SELECT o FROM Orders o WHERE FUNCTION('YEAR', o.paymentId.date) = FUNCTION('YEAR', CURRENT_DATE)");
+                }
+            } else {
+                query = manager.createNamedQuery("Orders.findAll");
+            }
+            System.out.println(getString);
+            ordersList = query.getResultList();
             session.setAttribute("orders-list", ordersList);
 
         } catch (Exception e) {
+            System.out.println(e);
             session.setAttribute("error", e);
             response.sendRedirect("/AMIT3094_Assignment/admin/error.jsp");
         }
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

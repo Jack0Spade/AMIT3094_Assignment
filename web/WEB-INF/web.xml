@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+    <context-param>
+        <param-name>webName</param-name>
+        <param-value>Dostyle</param-value>
+    </context-param>
+    <context-param>
+        <param-name>webLogo</param-name>
+        <param-value>./../img/logo.png</param-value>
+    </context-param>
     <servlet>
         <servlet-name>ProductController</servlet-name>
         <servlet-class>assignment.admin.ProductController</servlet-class>
@@ -68,6 +76,38 @@
         <servlet-name>CompleteOrder</servlet-name>
         <servlet-class>assignment.admin.CompleteOrder</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetStaffDetails</servlet-name>
+        <servlet-class>assignment.admin.GetStaffDetails</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateStaff</servlet-name>
+        <servlet-class>assignment.admin.UpdateStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteStaff</servlet-name>
+        <servlet-class>assignment.admin.DeleteStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddStaff</servlet-name>
+        <servlet-class>assignment.admin.AddStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetReportData</servlet-name>
+        <servlet-class>assignment.admin.GetReportData</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetCustomerOrders</servlet-name>
+        <servlet-class>assignment.admin.GetCustomerOrders</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DisableStaff</servlet-name>
+        <servlet-class>assignment.admin.DisableStaff</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EnableStaff</servlet-name>
+        <servlet-class>assignment.admin.EnableStaff</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductController</servlet-name>
         <url-pattern>/admin/product-list</url-pattern>
@@ -135,6 +175,38 @@
     <servlet-mapping>
         <servlet-name>CompleteOrder</servlet-name>
         <url-pattern>/admin/CompleteOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetStaffDetails</servlet-name>
+        <url-pattern>/admin/GetStaffDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateStaff</servlet-name>
+        <url-pattern>/admin/UpdateStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteStaff</servlet-name>
+        <url-pattern>/admin/DeleteStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddStaff</servlet-name>
+        <url-pattern>/admin/AddStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetReportData</servlet-name>
+        <url-pattern>/admin/GetReportData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetCustomerOrders</servlet-name>
+        <url-pattern>/admin/GetCustomerOrders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisableStaff</servlet-name>
+        <url-pattern>/admin/DisableStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EnableStaff</servlet-name>
+        <url-pattern>/admin/EnableStaff</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

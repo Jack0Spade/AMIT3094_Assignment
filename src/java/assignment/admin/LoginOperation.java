@@ -93,6 +93,12 @@ public class LoginOperation extends HttpServlet {
 
             try {
                 Staff staff = (Staff) query.getSingleResult();
+                if (staff.getStatus() == 0) {
+                    session.setAttribute("emailError", "Account has been disabled");
+                    session.setAttribute("passwordError", "Account has been disabled");
+                    response.sendRedirect("/AMIT3094_Assignment/admin/login.jsp");
+                    return;
+                }
                 session.setAttribute("staff", staff);
                 response.sendRedirect("/AMIT3094_Assignment/admin/index.jsp");
             } catch (NoResultException e) {

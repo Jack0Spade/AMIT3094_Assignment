@@ -35,12 +35,27 @@
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
                                                 <div class="toggle-wrap nk-block-tools-toggle">
-                                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+                                                    <div class="form-group">
+                                                        <div class="form-control-wrap">
+                                                            <select class="form-select js-select2" onchange="filterOrder()" id="filter">
+                                                                <%
+                                                                    String filterSelect = "";
+                                                                    if (request.getParameter("filter") != null) {
+                                                                        filterSelect = request.getParameter("filter");
+                                                                    }
+                                                                %>
+                                                                <option value="day" <%= filterSelect.equals("day") ? "selected" : ""%>>Day</option>
+                                                                <option value="month" <%= filterSelect.equals("month") ? "selected" : ""%>>Month</option>
+                                                                <option value="year" <%= filterSelect.equals("year") ? "selected" : ""%>> Year</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                         </div><!-- .nk-block-between -->
                                     </div><!-- .nk-block-head -->
                                     <table class="datatable-init nowrap nk-tb-list is-separate" data-auto-responsive="false">
+
                                         <thead>
                                             <tr class="nk-tb-item nk-tb-head">
                                                 <th class="nk-tb-col tb-col-sm"><span>Order ID</span></th>
@@ -57,8 +72,7 @@
                                             </tr><!-- .nk-tb-item -->
                                         </thead>
                                         <tbody>
-                                            <%
-                                                for (Orders order : ordersList) {
+                                            <%                                                for (Orders order : ordersList) {
                                                     Date date = order.getPaymentId().getDate();
                                                     DateFormat outputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                                                     String outputDateStr = outputDateFormat.format(date);
@@ -76,10 +90,10 @@
                                                     <span class="tb-lead"><%= order.getCustomerId().getCustomerName()%></span>
                                                 </td>
                                                 <td class="nk-tb-col">
-                                                    <span class="tb-sub"><%= order.getPaymentId().getAmount()%> MYR</span>
+                                                    <span class="tb-sub"><%= String.format("%.2f", order.getPaymentId().getAmount())%> MYR</span>
                                                 </td>
                                                 <td class="nk-tb-col">
-                                                    <span class="tb-sub"><%= outputDateStr %></span>
+                                                    <span class="tb-sub"><%= outputDateStr%></span>
                                                 </td>
                                                 <td class="nk-tb-col">
                                                     <%
@@ -147,6 +161,12 @@
 
             }
         %>
+
+        <script>
+                                                                function filterOrder() {
+                                                                    window.location.href = "order-list.jsp?filter=" + $("#filter").val();
+                                                                }
+        </script>
     </body>
 
 </html>

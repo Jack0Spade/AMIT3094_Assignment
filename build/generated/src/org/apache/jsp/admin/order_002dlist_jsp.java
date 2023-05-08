@@ -3,6 +3,8 @@ package org.apache.jsp.admin;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import entity.Orders;
 import javax.persistence.criteria.Order;
 import java.util.Base64;
@@ -61,6 +63,8 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
+      out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<html lang=\"zxx\" class=\"js\">\n");
       out.write("\n");
@@ -94,9 +98,9 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("    <div class=\"nk-sidebar-element nk-sidebar-head\">\n");
       out.write("        <div class=\"nk-sidebar-brand\">\n");
       out.write("            <a href=\"index.jsp\" class=\"logo-link nk-sidebar-logo\">\n");
-      out.write("                <img class=\"logo-light logo-img\" src=\"./images/logo.png\" srcset=\"./images/logo2x.png 2x\" alt=\"logo\">\n");
-      out.write("                <img class=\"logo-dark logo-img\" src=\"./images/logo-dark.png\" srcset=\"./images/logo-dark2x.png 2x\" alt=\"logo-dark\">\n");
-      out.write("                <img class=\"logo-small logo-img logo-img-small\" src=\"./images/logo-small.png\" srcset=\"./images/logo-small2x.png 2x\" alt=\"logo-small\">\n");
+      out.write("                <img class=\"logo-dark logo-img\" src=\"");
+      out.print( getServletContext().getInitParameter("webLogo") );
+      out.write("\" srcset=\"./images/logo-dark2x.png 2x\" alt=\"logo-dark\">\n");
       out.write("            </a>\n");
       out.write("        </div>\n");
       out.write("        <div class=\"nk-menu-trigger me-n2\">\n");
@@ -153,6 +157,19 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("                            </li>\n");
       out.write("                        </ul><!-- .nk-menu-sub -->\n");
       out.write("                    </li><!-- .nk-menu-item -->\n");
+      out.write("                    <li class=\"nk-menu-item has-sub\">\n");
+      out.write("                        <a href=\"#\" class=\"nk-menu-link nk-menu-toggle\">\n");
+      out.write("                            <span class=\"nk-menu-icon\"><em class=\"icon ni ni-tile-thumb-fill\"></em></span>\n");
+      out.write("                            <span class=\"nk-menu-text\">Staff</span>\n");
+      out.write("                        </a>\n");
+      out.write("                        <ul class=\"nk-menu-sub\">\n");
+      out.write("                            <li class=\"nk-menu-item\">\n");
+      out.write("                                <a href=\"staff-list.jsp\" class=\"nk-menu-link\"><span class=\"nk-menu-text\">Staff Lists</span></a>\n");
+      out.write("                            </li>\n");
+      out.write("                        </ul><!-- .nk-menu-sub -->\n");
+      out.write("                    </li><!-- .nk-menu-item -->\n");
+      out.write("                   \n");
+      out.write("                    \n");
       out.write("                </ul><!-- .nk-menu -->\n");
       out.write("            </div><!-- .nk-sidebar-menu -->\n");
       out.write("        </div><!-- .nk-sidebar-content -->\n");
@@ -238,7 +255,7 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("<!-- main header @e -->");
       out.write("\n");
       out.write("                    ");
-      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/admin/GetCustomerList", out, false);
+      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/admin/GetOrdersList", out, false);
       out.write("\n");
       out.write("                    ");
 
@@ -258,25 +275,41 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("                                            </div><!-- .nk-block-head-content -->\n");
       out.write("                                            <div class=\"nk-block-head-content\">\n");
       out.write("                                                <div class=\"toggle-wrap nk-block-tools-toggle\">\n");
-      out.write("                                                    <a href=\"#\" class=\"btn btn-icon btn-trigger toggle-expand me-n1\" data-target=\"pageMenu\"><em class=\"icon ni ni-more-v\"></em></a>\n");
-      out.write("                                                    <div class=\"toggle-expand-content\" data-content=\"pageMenu\">\n");
-      out.write("                                                        <ul class=\"nk-block-tools g-3\">\n");
-      out.write("                                                            <li class=\"nk-block-tools-opt\">\n");
-      out.write("                                                                <a href=\"#\" class=\"btn btn-icon btn-primary d-md-none\"><em class=\"icon ni ni-plus\"></em></a>\n");
-      out.write("                                                                <a data-bs-toggle=\"modal\" data-bs-target=\"#profile-edit\" class=\"btn btn-primary d-none d-md-inline-flex\"><em class=\"icon ni ni-plus\"></em><span>Add Products</span></a>\n");
-      out.write("                                                            </li>\n");
-      out.write("                                                        </ul>\n");
+      out.write("                                                    <div class=\"form-group\">\n");
+      out.write("                                                        <div class=\"form-control-wrap\">\n");
+      out.write("                                                            <select class=\"form-select js-select2\" onchange=\"filterOrder()\" id=\"filter\">\n");
+      out.write("                                                                ");
+
+                                                                    String filterSelect = "";
+                                                                    if (request.getParameter("filter") != null) {
+                                                                        filterSelect = request.getParameter("filter");
+                                                                    }
+                                                                
+      out.write("\n");
+      out.write("                                                                <option value=\"day\" ");
+      out.print( filterSelect.equals("day") ? "selected" : "");
+      out.write(">Day</option>\n");
+      out.write("                                                                <option value=\"month\" ");
+      out.print( filterSelect.equals("month") ? "selected" : "");
+      out.write(">Month</option>\n");
+      out.write("                                                                <option value=\"year\" ");
+      out.print( filterSelect.equals("year") ? "selected" : "");
+      out.write("> Year</option>\n");
+      out.write("                                                            </select>\n");
+      out.write("                                                        </div>\n");
       out.write("                                                    </div>\n");
       out.write("                                                </div>\n");
       out.write("                                            </div><!-- .nk-block-head-content -->\n");
       out.write("                                        </div><!-- .nk-block-between -->\n");
       out.write("                                    </div><!-- .nk-block-head -->\n");
       out.write("                                    <table class=\"datatable-init nowrap nk-tb-list is-separate\" data-auto-responsive=\"false\">\n");
+      out.write("\n");
       out.write("                                        <thead>\n");
       out.write("                                            <tr class=\"nk-tb-item nk-tb-head\">\n");
       out.write("                                                <th class=\"nk-tb-col tb-col-sm\"><span>Order ID</span></th>\n");
       out.write("                                                <th class=\"nk-tb-col\"><span>Customer Name</span></th>\n");
       out.write("                                                <th class=\"nk-tb-col\"><span>Total</span></th>\n");
+      out.write("                                                <th class=\"nk-tb-col\"><span>Date Ordered</span></th>\n");
       out.write("                                                <th class=\"nk-tb-col\"><span>Status</span></th>\n");
       out.write("                                                <th class=\"nk-tb-col nk-tb-col-tools\">\n");
       out.write("                                                    <ul class=\"nk-tb-actions gx-1 my-n1\">\n");
@@ -288,12 +321,11 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("                                        </thead>\n");
       out.write("                                        <tbody>\n");
       out.write("                                            ");
-  
-                                                // id
-                                                // customer
-                                                // total
-                                                //status
                                                 for (Orders order : ordersList) {
+                                                    Date date = order.getPaymentId().getDate();
+                                                    DateFormat outputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                                    String outputDateStr = outputDateFormat.format(date);
+
                                             
       out.write("\n");
       out.write("                                            <tr class=\"nk-tb-item\">\n");
@@ -302,20 +334,38 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("                                                    <span class=\"tb-product\">\n");
       out.write("\n");
       out.write("                                                        <span class=\"title\">");
-      out.print( order.getOrderId() );
+      out.print( order.getOrderId());
       out.write("</span>\n");
       out.write("                                                    </span>\n");
       out.write("                                                </td>\n");
       out.write("                                                <td class=\"nk-tb-col\">\n");
       out.write("                                                    <span class=\"tb-lead\">");
-      out.print( order.getCustomerId().getCustomerName() );
+      out.print( order.getCustomerId().getCustomerName());
       out.write("</span>\n");
       out.write("                                                </td>\n");
       out.write("                                                <td class=\"nk-tb-col\">\n");
       out.write("                                                    <span class=\"tb-sub\">");
-      out.print( order.getPaymentId().getAmount() );
+      out.print( String.format("%.2f", order.getPaymentId().getAmount()));
+      out.write(" MYR</span>\n");
+      out.write("                                                </td>\n");
+      out.write("                                                <td class=\"nk-tb-col\">\n");
+      out.write("                                                    <span class=\"tb-sub\">");
+      out.print( outputDateStr);
       out.write("</span>\n");
       out.write("                                                </td>\n");
+      out.write("                                                <td class=\"nk-tb-col\">\n");
+      out.write("                                                    ");
+
+                                                        if (order.getStatus() == 0) {
+                                                            out.print("<span class='dot bg-warning d-sm-none'></span><span class='badge badge-sm badge-dot has-bg bg-warning d-none d-sm-inline-flex'>Delivering</span>");
+                                                        } else {
+                                                            out.print("<span class='dot bg-success d-sm-none'></span><span class='badge badge-sm badge-dot has-bg bg-success d-none d-sm-inline-flex'>Completed</span>");
+                                                        }
+                                                    
+      out.write("\n");
+      out.write("\n");
+      out.write("                                                </td>\n");
+      out.write("\n");
       out.write("\n");
       out.write("                                                <td class=\"nk-tb-col nk-tb-col-tools\">\n");
       out.write("                                                    <ul class=\"nk-tb-actions gx-1 my-n1\">\n");
@@ -324,7 +374,7 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("                                                                <a href=\"#\" class=\"dropdown-toggle btn btn-icon btn-trigger\" data-bs-toggle=\"dropdown\"><em class=\"icon ni ni-more-h\"></em></a>\n");
       out.write("                                                                <div class=\"dropdown-menu dropdown-menu-end\">\n");
       out.write("                                                                    <ul class=\"link-list-opt no-bdr\">\n");
-      out.write("                                                                        <li><a href=\"GetCustomerDetails?customerId=");
+      out.write("                                                                        <li><a href=\"GetOrderDetails?orderId=");
       out.print( order.getOrderId());
       out.write("\"><em class=\"icon ni ni-edit\"></em><span>View Details</span></a></li>\n");
       out.write("                                                                    </ul>\n");
@@ -345,117 +395,7 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("                            </div>\n");
       out.write("                        </div>\n");
       out.write("                    </div>\n");
-      out.write("                    <div class=\"modal fade addform\" role=\"dialog\" id=\"profile-edit\">\n");
-      out.write("                        <div class=\"modal-dialog modal-dialog-centered modal-lg\" role=\"document\">\n");
-      out.write("                            <div class=\"modal-content\">\n");
-      out.write("                                <a href=\"#\" class=\"close\" data-bs-dismiss=\"modal\"><em class=\"icon ni ni-cross-sm\"></em></a>\n");
-      out.write("                                <div class=\"modal-body modal-body-lg\">\n");
-      out.write("                                    <h5 class=\"title\">Create New Customer</h5>\n");
-      out.write("                                    <ul class=\"nk-nav nav nav-tabs\">\n");
-      out.write("                                    </ul><!-- .nav-tabs -->\n");
-      out.write("                                    <div class=\"tab-content\">\n");
-      out.write("                                        <div class=\"tab-pane active\" id=\"personal\">\n");
-      out.write("                                            <form action=\"AddCustomer\" method=\"POST\">\n");
-      out.write("                                                <div class=\"row gy-4\">\n");
-      out.write("                                                    <div class=\"col-md-6\">\n");
-      out.write("                                                        <div class=\"form-group\">\n");
-      out.write("                                                            <label class=\"form-label\" for=\"full-name\">Full Name</label>\n");
-      out.write("                                                            <input type=\"text\" class=\"form-control form-control-lg pt-0 pb-0\" name=\"customer-name\" value=\"\" placeholder=\"\">\n");
-      out.write("                                                            <span class=\"text-danger\">\n");
-      out.write("                                                                ");
-
-                                                                    if (session.getAttribute("nameError") != null && session.getAttribute("nameError") != "") {
-                                                                        out.print(session.getAttribute("nameError"));
-                                                                        session.setAttribute("nameError", null);
-                                                                    }
-                                                                
       out.write("\n");
-      out.write("                                                            </span>\n");
-      out.write("                                                        </div>\n");
-      out.write("                                                    </div>\n");
-      out.write("                                                    <div class=\"col-md-6\">\n");
-      out.write("                                                        <div class=\"form-group\">\n");
-      out.write("                                                            <label class=\"form-label\" for=\"display-name\">Email</label>\n");
-      out.write("                                                            <input type=\"email\" class=\"form-control form-control-lg pt-0 pb-0\" name=\"customer-email\" value=\"\" placeholder=\"\">\n");
-      out.write("                                                            <span class=\"text-danger\">\n");
-      out.write("                                                                ");
-
-                                                                    if (session.getAttribute("emailError") != null && session.getAttribute("emailError") != "") {
-                                                                        out.print(session.getAttribute("emailError"));
-                                                                        session.setAttribute("emailError", null);
-                                                                    }
-                                                                
-      out.write("\n");
-      out.write("                                                            </span>\n");
-      out.write("                                                        </div>\n");
-      out.write("                                                    </div>\n");
-      out.write("                                                    <div class=\"col-md-6\">\n");
-      out.write("                                                        <div class=\"form-group\">\n");
-      out.write("                                                            <label class=\"form-label\" for=\"phone-no\">Password</label>\n");
-      out.write("                                                            <input type=\"password\" class=\"form-control form-control-lg pt-0 pb-0 ps-2 pe-2\" name=\"customer-password\" value=\"\" placeholder=\"\">\n");
-      out.write("                                                            <span class=\"text-danger\">\n");
-      out.write("                                                                ");
-
-                                                                    if (session.getAttribute("passwordError") != null && session.getAttribute("passwordError") != "") {
-                                                                        out.print(session.getAttribute("passwordError"));
-                                                                        session.setAttribute("passwordError", null);
-                                                                    }
-                                                                
-      out.write("\n");
-      out.write("                                                            </span>\n");
-      out.write("                                                        </div>\n");
-      out.write("                                                    </div>\n");
-      out.write("                                                    <div class=\"col-md-6\">\n");
-      out.write("                                                        <div class=\"form-group\">\n");
-      out.write("                                                            <label class=\"form-label\" for=\"phone-no\">Confirm Password</label>\n");
-      out.write("                                                            <input type=\"password\" class=\"form-control form-control-lg pt-0 pb-0 ps-2 pe-2\" name=\"customer-confirm-password\" value=\"\" placeholder=\"\">\n");
-      out.write("                                                            <span class=\"text-danger\">\n");
-      out.write("                                                                ");
-
-                                                                    if (session.getAttribute("confirmPasswordError") != null && session.getAttribute("confirmPasswordError") != "") {
-                                                                        out.print(session.getAttribute("confirmPasswordError"));
-                                                                        session.setAttribute("confirmPasswordError", null);
-                                                                    }
-                                                                
-      out.write("\n");
-      out.write("                                                            </span>\n");
-      out.write("                                                        </div>\n");
-      out.write("                                                    </div>\n");
-      out.write("                                                    <div class=\"col-md-6\">\n");
-      out.write("                                                        <div class=\"form-group\">\n");
-      out.write("                                                            <label class=\"form-label\" for=\"birth-day\">Contact Number</label>\n");
-      out.write("                                                            <input type=\"tel\" pattern=\"[0][1][0-9][0-9]{10-13}\" class=\"form-control\" placeholder=\"01234567891\" name=\"customer-contact\" value=\"\">\n");
-      out.write("                                                            <span class=\"text-danger\">\n");
-      out.write("                                                                ");
-
-                                                                    if (session.getAttribute("contactError") != null && session.getAttribute("contactError") != "") {
-                                                                        out.print(session.getAttribute("contactError"));
-                                                                        session.setAttribute("contactError", null);
-                                                                    }
-                                                                
-      out.write("\n");
-      out.write("                                                            </span>\n");
-      out.write("                                                        </div>\n");
-      out.write("                                                    </div>\n");
-      out.write("                                                    <div class=\"col-12\">\n");
-      out.write("                                                        <ul class=\"align-center flex-wrap flex-sm-nowrap gx-4 gy-2\">\n");
-      out.write("                                                            <li>\n");
-      out.write("                                                                <input type=\"submit\" data-bs-dismiss=\"modal\" class=\"btn btn-lg btn-primary\" value=\"Add Customer\">\n");
-      out.write("                                                            </li>\n");
-      out.write("                                                            <li>\n");
-      out.write("                                                                <a href=\"#\" data-bs-dismiss=\"modal\" class=\"link link-light\">Cancel</a>\n");
-      out.write("                                                            </li>\n");
-      out.write("                                                        </ul>\n");
-      out.write("                                                    </div>\n");
-      out.write("                                                </div>\n");
-      out.write("                                            </form>\n");
-      out.write("                                        </div><!-- .tab-pane -->\n");
-      out.write("\n");
-      out.write("                                    </div><!-- .tab-content -->\n");
-      out.write("                                </div><!-- .modal-body -->\n");
-      out.write("                            </div><!-- .modal-content -->\n");
-      out.write("                        </div><!-- .modal-dialog -->\n");
-      out.write("                    </div><!-- .modal -->\n");
       out.write("\n");
       out.write("\n");
       out.write("                    <!-- content @e -->\n");
@@ -464,7 +404,9 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("<div class=\"nk-footer\">\n");
       out.write("    <div class=\"container-fluid\">\n");
       out.write("        <div class=\"nk-footer-wrap\">\n");
-      out.write("            <div class=\"nk-footer-copyright\"> &copy; 2023 Dostyle. Template by <a href=\"https://softnio.com\" target=\"_blank\">Softnio</a>\n");
+      out.write("            <div class=\"nk-footer-copyright\"> &copy; 2023 ");
+      out.print( getServletContext().getInitParameter("webName") );
+      out.write("\n");
       out.write("            </div>\n");
       out.write("        </div>\n");
       out.write("    </div>\n");
@@ -500,6 +442,12 @@ public final class order_002dlist_jsp extends org.apache.jasper.runtime.HttpJspB
             }
         
       out.write("\n");
+      out.write("\n");
+      out.write("        <script>\n");
+      out.write("                                                                function filterOrder() {\n");
+      out.write("                                                                    window.location.href = \"order-list.jsp?filter=\" + $(\"#filter\").val();\n");
+      out.write("                                                                }\n");
+      out.write("        </script>\n");
       out.write("    </body>\n");
       out.write("\n");
       out.write("</html>");

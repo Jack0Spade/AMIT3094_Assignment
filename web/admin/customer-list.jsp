@@ -21,7 +21,7 @@
 
                     <!-- content @s -->
                     <div class="nk-content ">
-                        <div class="container-fluid">
+                        <div class="container-fluid">   
                             <div class="nk-content-inner">
                                 <div class="nk-content-body">
                                     <div class="nk-block-head nk-block-head-sm">
@@ -221,11 +221,15 @@
             try {
                 int error = (Integer) session.getAttribute("error");
                 if (error == 1) {
-                    out.print("<script>Swal.fire({"
-                            + "icon: 'error',"
-                            + "title: 'Oops...',"
-                            + "text: `Adding new customer failed!`"
-                            + "})" + "</script>");
+        %>
+
+        <script>
+            $(document).ready(function () {
+                $('#profile-edit').modal('show');
+            });
+        </script>
+
+        <%
                     session.setAttribute("error", 0);
                 }
             } catch (Exception e) {

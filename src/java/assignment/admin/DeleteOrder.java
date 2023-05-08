@@ -6,6 +6,7 @@ package assignment.admin;
 
 import entity.OrderList;
 import entity.Orders;
+import entity.Payment;
 import entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -57,7 +58,7 @@ public class DeleteOrder extends HttpServlet {
             String orderId = getString.split("=")[1];
 
             try {
-                
+
                 Orders orderss = manager.find(Orders.class, Integer.valueOf(orderId));
                 Query query = manager.createQuery("SELECT o FROM OrderList o WHERE o.orderId = :orderId");
                 query.setParameter("orderId", orderss);
@@ -68,6 +69,8 @@ public class DeleteOrder extends HttpServlet {
                 // Loop through the list and delete each order
                 for (OrderList order : orderList) {
                     tx.begin();
+                    order.getProductId().setQty(order.getProductId().getQty() + order.getQty());
+                    manager.merge(order.getProductId());
                     OrderList mergedOrder = manager.merge(order); // Merge the detached entity
                     manager.remove(mergedOrder);
                     tx.commit();
@@ -76,6 +79,9 @@ public class DeleteOrder extends HttpServlet {
                 try {
                     tx.begin();
                     Orders orders = manager.find(Orders.class, Integer.valueOf(orderId));
+                    Payment payment = manager.find(Payment.class, orders.getPaymentId().getPaymentId());
+                    manager.remove(payment);
+
                     if (orders != null) {
                         manager.remove(orders);
                         tx.commit();
