@@ -43,4 +43,14 @@
 CREATE TABLE Product (product_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 product_name VARCHAR(140) NOT NULL,
 product_price DOUBLE,
-product_image BLOB);-->
+product_image BLOB);
+
+
+
+
+
+
+fix list
+1) product edit spinner
+2) product edit success message
+-->

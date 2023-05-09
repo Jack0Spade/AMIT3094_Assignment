@@ -7,22 +7,22 @@ package entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author LocalMachine
+ * @author mayte
  */
 @Entity
 @Table(name = "CATEGORY")
@@ -30,19 +30,23 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
     @NamedQuery(name = "Category.findByCategoryid", query = "SELECT c FROM Category c WHERE c.categoryid = :categoryid"),
-    @NamedQuery(name = "Category.findByCategoryname", query = "SELECT c FROM Category c WHERE c.categoryname = :categoryname")})
+    @NamedQuery(name = "Category.findByCategoryname", query = "SELECT c FROM Category c WHERE c.categoryname = :categoryname"),
+    @NamedQuery(name = "Category.findByCategorydesc", query = "SELECT c FROM Category c WHERE c.categorydesc = :categorydesc")})
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "CATEGORYID")
     private Integer categoryid;
     @Size(max = 50)
     @Column(name = "CATEGORYNAME")
     private String categoryname;
-    @OneToMany(mappedBy = "categorycode")
+    @Size(max = 500)
+    @Column(name = "CATEGORYDESC")
+    private String categorydesc;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categorycode")
     private List<Product> productList;
 
     public Category() {
@@ -66,6 +70,14 @@ public class Category implements Serializable {
 
     public void setCategoryname(String categoryname) {
         this.categoryname = categoryname;
+    }
+
+    public String getCategorydesc() {
+        return categorydesc;
+    }
+
+    public void setCategorydesc(String categorydesc) {
+        this.categorydesc = categorydesc;
     }
 
     @XmlTransient

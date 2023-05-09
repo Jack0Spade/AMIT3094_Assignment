@@ -5,7 +5,6 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,14 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author LocalMachine
+ * @author Kyan
  */
 @Entity
 @Table(name = "ORDERS")
@@ -31,7 +29,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
     @NamedQuery(name = "Orders.findByOrderId", query = "SELECT o FROM Orders o WHERE o.orderId = :orderId"),
-    @NamedQuery(name = "Orders.findByStatus", query = "SELECT o FROM Orders o WHERE o.status = :status")})
+    @NamedQuery(name = "Orders.findByStatus", query = "SELECT o FROM Orders o WHERE o.status = :status"),
+    @NamedQuery(name = "Orders.findByAddressLineOne", query = "SELECT o FROM Orders o WHERE o.addressLineOne = :addressLineOne"),
+    @NamedQuery(name = "Orders.findByAddressLineTwo", query = "SELECT o FROM Orders o WHERE o.addressLineTwo = :addressLineTwo"),
+    @NamedQuery(name = "Orders.findByCustomerId", query = "SELECT o FROM Orders o WHERE o.customerId = :customerId")
+})
 public class Orders implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,8 +44,12 @@ public class Orders implements Serializable {
     private Integer orderId;
     @Column(name = "STATUS")
     private Integer status;
-    @OneToMany(mappedBy = "orderId")
-    private List<OrderList> orderListList;
+    @Size(max = 50)
+    @Column(name = "ADDRESS_LINE_ONE")
+    private String addressLineOne;
+    @Size(max = 50)
+    @Column(name = "ADDRESS_LINE_TWO")
+    private String addressLineTwo;
     @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")
     @ManyToOne
     private Customer customerId;
@@ -74,13 +80,20 @@ public class Orders implements Serializable {
         this.status = status;
     }
 
-    @XmlTransient
-    public List<OrderList> getOrderListList() {
-        return orderListList;
+    public String getAddressLineOne() {
+        return addressLineOne;
     }
 
-    public void setOrderListList(List<OrderList> orderListList) {
-        this.orderListList = orderListList;
+    public void setAddressLineOne(String addressLineOne) {
+        this.addressLineOne = addressLineOne;
+    }
+
+    public String getAddressLineTwo() {
+        return addressLineTwo;
+    }
+
+    public void setAddressLineTwo(String addressLineTwo) {
+        this.addressLineTwo = addressLineTwo;
     }
 
     public Customer getCustomerId() {

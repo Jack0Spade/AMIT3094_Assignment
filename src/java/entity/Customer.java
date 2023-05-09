@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Customer.findByCustomerName", query = "SELECT c FROM Customer c WHERE c.customerName = :customerName"),
     @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.email = :email"),
     @NamedQuery(name = "Customer.findByPassword", query = "SELECT c FROM Customer c WHERE c.password = :password"),
+    @NamedQuery(name = "Customer.findByEmailAndPassword", query = "SELECT c FROM Customer c WHERE c.email = :email AND c.password = :password"),
     @NamedQuery(name = "Customer.findByCustomerContact", query = "SELECT c FROM Customer c WHERE c.customerContact = :customerContact")})
 public class Customer implements Serializable {
 
@@ -59,6 +60,18 @@ public class Customer implements Serializable {
     private List<Orders> ordersList;
 
     public Customer() {
+    }
+    
+    public Customer(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+    
+    public Customer(String customerName, String email, String customerContact, String password) {
+        this.customerName = customerName;
+        this.email = email;
+        this.customerContact = customerContact;
+        this.password = password;
     }
 
     public Customer(Integer customerId) {

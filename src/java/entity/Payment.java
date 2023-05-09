@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author LocalMachine
+ * @author Kyan
  */
 @Entity
 @Table(name = "PAYMENT")
@@ -58,6 +58,13 @@ public class Payment implements Serializable {
 
     public Payment() {
     }
+
+    public Payment(String paymentMethod, Double amount, Date date) {
+        this.paymentMethod = paymentMethod;
+        this.amount = amount;
+        this.date = date;
+    }    
+    
 
     public Payment(Integer paymentId) {
         this.paymentId = paymentId;
@@ -130,3 +137,4 @@ public class Payment implements Serializable {
     }
     
 }
+
